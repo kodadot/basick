@@ -15,13 +15,14 @@ import { maxBy } from 'lodash'
 import { lookupArchive } from "@subsquid/archive-registry";
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
+const archive = lookupArchive('zksync')
 
 const database = new TypeormDatabase();
 const processor = new EvmBatchProcessor()
   .setBlockRange({ from: 5_188_611 })
   .setDataSource({
     chain: 'https://mainnet.era.zksync.io',
-    archive: 'https://zksync.archive.subsquid.io',
+    archive,
   })
   .addLog(CONTRACT_ADDRESS, {
     filter: [[events.Transfer.topic]],
