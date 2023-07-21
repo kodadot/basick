@@ -1,38 +1,67 @@
 type CollectionEntity @entity {
-  id: ID!
   blockNumber: BigInt
   createdAt: DateTime!
   currentOwner: String!
+#   distribution: Int!
+  events: [CollectionEvent!] @derivedFrom(field: "collection")
+#   floor: BigInt!
+  hash: String! @unique
+#   highestSale: BigInt!
+  id: ID!
+  image: String
   issuer: String!
-  max: Int! # totalSupply
+  max: Int
+  media: String
   meta: MetadataEntity
-  burned: Boolean
   metadata: String
-  name: String
+  name: String @index
+#   nftCount: Int!
   nfts: [NFTEntity!] @derivedFrom(field: "collection")
-  symbol: String
-  updatedAt: DateTime!
+#   ownerCount: Int!
+#   supply: Int!
   type: CollectionType!
+  updatedAt: DateTime!
+#   version: Int!
+#   volume: BigInt!
 }
 
 type NFTEntity @entity {
-  id: ID!
   blockNumber: BigInt
   burned: Boolean!
   collection: CollectionEntity!
   createdAt: DateTime!
-  currentOwner: String!
+  currentOwner: String! @index
   events: [Event!] @derivedFrom(field: "nft")
   hash: String! @index
+  id: ID!
+  image: String
   issuer: String!
+  lewd: Boolean!
+  media: String
   meta: MetadataEntity
   metadata: String
-  name: String
+  name: String @index
   price: BigInt
-  royalty: Int
+  recipient: String
+  royalty: Float
   sn: String!
-  count: BigInt!
   updatedAt: DateTime!
+  version: Int!
+  token: TokenEntity!
+}
+
+type TokenEntity @entity {
+  id: ID!
+  blockNumber: BigInt
+  collection: CollectionEntity
+  nfts: [NFTEntity!] @derivedFrom(field: "token")
+  hash: String! @index
+  image: String
+  media: String
+  name: String @index
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  count: Int!
 }
 
 type MetadataEntity @entity {
@@ -58,6 +87,7 @@ interface EventType {
   caller: String!
   currentOwner: String
   interaction: Interaction!
+  # version: Int!
   meta: String!
 }
 
@@ -70,6 +100,19 @@ type Event implements EventType @entity {
   interaction: Interaction!
   meta: String!
   nft: NFTEntity!
+  # version: Int!
+}
+
+type CollectionEvent implements EventType @entity {
+  id: ID!
+  blockNumber: BigInt
+  timestamp: DateTime!
+  caller: String!
+  currentOwner: String # currentOwner
+  interaction: Interaction!
+  meta: String!
+  collection: CollectionEntity!
+  # version: Int!
 }
 
 enum CollectionType {
@@ -78,15 +121,14 @@ enum CollectionType {
 }
 
 enum Interaction {
-  MINT
-  MINTNFT
-  LIST
-  UNLIST
+  BURN
   BUY
+  CREATE
+  LIST
+  MINT
   SEND
-  CONSUME
+  UNLIST
 }
-
 # type Owner @entity {
 #     id: ID! # owner address
 #     ownedTokens: [Token!]! @derivedFrom(field: "owner")
