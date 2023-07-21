@@ -5,7 +5,7 @@
     "build": "rm -rf lib && tsc"
   },
   "dependencies": {
-    "@kodadot1/metasquid": "^0.2.0-rc.0",
+    "@kodadot1/metasquid": "^0.2.1-rc.0",
     "@kodadot1/minipfs": "^0.4.0-rc.0",
     "@subsquid/archive-registry": "^3.1.0",
     "@subsquid/evm-processor": "^1.7.0",
