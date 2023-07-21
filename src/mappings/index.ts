@@ -2,7 +2,7 @@ import { serializer } from '@kodadot1/metasquid'
 import * as erc721 from '../abi/ERC721'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
-import { BlockData, Context, Log } from './utils/types'
+import { BlockData, Context, ItemStateUpdate, Log } from './utils/types'
 import { CONTRACT_ADDRESS } from '../processor'
 
 export async function mainFrame(ctx: Context): Promise<void> {
@@ -21,6 +21,8 @@ export async function mainFrame(ctx: Context): Promise<void> {
     return
   }
 
+  const { contracts, tokens } = uniqueEntities(items)
+
   console.log(JSON.stringify(items, serializer, 2))
 }
 
@@ -37,5 +39,15 @@ function unwrapLog(log: Log, block: BlockData) {
       // console.log('unknown log', log.topics[0])
       return null
     // throw new Error('unknown log')
+  }
+}
+
+function uniqueEntities<T extends ItemStateUpdate>(items: T[]): { contracts: Set<string>, tokens: Set<string> } {
+  const contracts = new Set<string>(items.map((i) => i.contract))
+  const tokens = new Set<string>(items.map((i) => i.id))
+
+  return {
+    contracts,
+    tokens,
   }
 }
