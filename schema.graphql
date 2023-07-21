@@ -77,6 +77,16 @@ enum CollectionType {
   ERC1155
 }
 
+enum Interaction {
+  MINT
+  MINTNFT
+  LIST
+  UNLIST
+  BUY
+  SEND
+  CONSUME
+}
+
 # type Owner @entity {
 #     id: ID! # owner address
 #     ownedTokens: [Token!]! @derivedFrom(field: "owner")
