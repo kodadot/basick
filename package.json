@@ -2,35 +2,32 @@
   "name": "squid-evm-template",
   "private": true,
   "scripts": {
-    "build": "rm -rf lib && tsc",
-    "db:migrate": "npx squid-typeorm-migration apply",
-    "squid-etl:start": "node lib/processor.js",
-    "squid-api:start": "squid-graphql-server",
-    "update": "npx npm-check-updates --filter /subsquid/ --upgrade && npm i -f"
+    "build": "rm -rf lib && tsc"
   },
   "dependencies": {
-    "@subsquid/archive-registry": "^2.1.14",
-    "@subsquid/big-decimal": "^1.0.0",
-    "@subsquid/cli": "^2.4.3",
-    "@subsquid/evm-processor": "^0.4.0",
-    "@subsquid/graphql-server": "3.3.2",
-    "@subsquid/typeorm-migration": "0.1.6",
-    "@subsquid/typeorm-store": "0.2.2",
-    "dotenv": "^16.3.1",
-    "ethers": "^6.6.4",
-    "lodash": "^4.17.21",
-    "pg": "^8.11.1",
-    "typeorm": "^0.3.17"
+    "@kodadot1/metasquid": "^0.1.6-rc.0",
+    "@kodadot1/minipfs": "^0.4.0-rc.0",
+    "@subsquid/archive-registry": "^3.1.0",
+    "@subsquid/evm-processor": "^1.7.0",
+    "@subsquid/graphql-server": "^4.2.0",
+    "@subsquid/typeorm-migration": "^1.2.0",
+    "@subsquid/typeorm-store": "^1.2.0",
+    "axios": "^1.4.0",
+    "dotenv": "^16.1.4",
+    "ethers": "^6.5.1",
+    "md5": "^2.3.0",
+    "nanoid": "3.3.4",
+    "pg": "^8.11.0",
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
-    "@ethersproject/abi": "^5.7.0",
-    "@subsquid/evm-typegen": "2.1.1",
-    "@subsquid/typeorm-codegen": "0.3.3",
-    "@typechain/ethers-v5": "^10.2.1",
-    "@types/lodash": "^4.14.195",
-    "@types/node": "^18.16.19",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "typechain": "^8.3.0",
-    "typescript": "~4.9.5"
+    "@subsquid/evm-typegen": "^3.2.0",
+    "@subsquid/typeorm-codegen": "^1.2.0",
+    "@types/md5": "^2.3.2",
+    "@types/node": "^18.16.17",
+    "typescript": "~5.1.3"
+  },
+  "overrides": {
+    "@subsquid/typeorm-store": "^1.2.0"
   }
 }
