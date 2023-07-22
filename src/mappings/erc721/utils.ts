@@ -20,6 +20,15 @@ export function decode721Transfer(ctx: Log) {
   return erc721.events.Transfer.decode(ctx)
 }
 
+export function safeDecode721Transfer(ctx: Log) {
+  try {
+    return decode721Transfer(ctx)
+  } catch (e) {
+    console.error('failed to decode 721 transfer', e)
+    return null
+  }
+}
+
 export function getTransferType(transfer: Transfer) {
   if (isMint(transfer)) {
     return 'mint'
