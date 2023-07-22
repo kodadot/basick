@@ -5,6 +5,8 @@ import { Block, Context, Fields, Log, Transaction } from '../../processor'
 import { BaseBlock } from '@kodadot1/metasquid/types'
 import { BlockData } from '@subsquid/evm-processor'
 import { Interaction } from '../../model/generated/_interaction'
+import exp from 'constants'
+import { CollectionEntity, NFTEntity } from '../../model'
 // import { CollectionEntity, NFTEntity } from '../../model'
 
 export type BaseCall = {
@@ -36,6 +38,46 @@ export function eventFrom<T extends Interaction>(interaction: T, { blockNumber, 
 //   });
 // }
 
+// export type EnMap<T> = Map<string, T>
+export class EnMap<T> extends Map<string, T> {};
+
+export interface UpdateState<T, E = any> {
+  id: string, // same as contract if collection of collection-sn if token
+  contract: string,
+  interaction?: Interaction
+  state: Partial<T>
+  event: IEvent<Interaction>
+  applyTo(item: T): T
+  applyToExta?(item: T, extra: E): any
+}
+
+export abstract class StateApplier<T, E = CollectionEntity> implements UpdateState<T> {
+  id: string  // same as contract if collection of collection-sn if token
+  contract: string
+  interaction?: Interaction
+  state: Partial<T>
+  event: IEvent<Interaction>
+
+
+  constructor(protected readonly stateToApply: UpdateState<T>) {
+    this.id = stateToApply.id
+    this.contract = stateToApply.contract
+    this.interaction = stateToApply.interaction
+    this.state = stateToApply.state
+    this.event = stateToApply.event
+  }
+
+  applyTo(item: T): T {
+    return { ...item, ...this.state }
+  }
+
+  // abstract applyToExta(extra: E): E;
+}
+
+export class ItemStateApplier<NFTEntity> extends StateApplier<NFTEntity> {
+
+}
+
 
 
 // export type Optional<T> = T | null;
@@ -53,15 +95,7 @@ export type ItemUpdate = Partial<any>
 export type CollectionUpdate = Partial<any>
 
 
-export type UpdateState<T> = {
-  id: string, // same as contract if collection of collection-sn if token
-  contract: string,
-  interaction?: Interaction //IEvent<Interaction>
-  state: Partial<T>
-  event: any //IEvent<Interaction>
-}
-
-export type ItemStateUpdate = UpdateState<any>
+export type ItemStateUpdate = UpdateState<NFTEntity, CollectionEntity>
 
 export type WithId = {
   id: string
