@@ -47,38 +47,9 @@ export interface UpdateState<T, E = any> {
   interaction?: Interaction
   state: Partial<T>
   event: IEvent<Interaction>
-  applyTo(item: T): T
-  applyToExta?(item: T, extra: E): any
+  applyTo(item: T, state: Partial<T>): T
+  applyToExta?(item: T, extra: E): E
 }
-
-export abstract class StateApplier<T, E = CollectionEntity> implements UpdateState<T> {
-  id: string  // same as contract if collection of collection-sn if token
-  contract: string
-  interaction?: Interaction
-  state: Partial<T>
-  event: IEvent<Interaction>
-
-
-  constructor(protected readonly stateToApply: UpdateState<T>) {
-    this.id = stateToApply.id
-    this.contract = stateToApply.contract
-    this.interaction = stateToApply.interaction
-    this.state = stateToApply.state
-    this.event = stateToApply.event
-  }
-
-  applyTo(item: T): T {
-    return { ...item, ...this.state }
-  }
-
-  // abstract applyToExta(extra: E): E;
-}
-
-export class ItemStateApplier<NFTEntity> extends StateApplier<NFTEntity> {
-
-}
-
-
 
 // export type Optional<T> = T | null;
 
