@@ -47,8 +47,8 @@ export interface UpdateState<T, E = any> {
   interaction?: Interaction
   state: Partial<T>
   event: IEvent<Interaction>
-  applyTo(item: T): T
-  applyToExta?(item: T, extra: E): E
+  applyTo?(item: T): T
+  applyFrom?(extra: E): E
 }
 
 // export type Optional<T> = T | null;
