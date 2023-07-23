@@ -19,6 +19,7 @@ type CollectionEntity @entity {
   nfts: [NFTEntity!] @derivedFrom(field: "collection")
 #   ownerCount: Int!
 #   supply: Int!
+#   symbol: String
   type: CollectionType!
   updatedAt: DateTime!
 #   version: Int!
