@@ -1,7 +1,7 @@
 default := 'squid'
 types := 'typegen'
 
-process: build
+process:
 	@npx sqd process
 
 serve:
@@ -38,7 +38,7 @@ reset: migrate
 
 quickstart: migrate process
 
-quick: build reset process
+quick: bug process
 
 prod TAG:
 	gh pr create --base release-{{TAG}}
@@ -61,10 +61,10 @@ release TAG=default:
 	npx sqd deploy -m {{TAG}}.yaml .
 
 kill TAG:
-	npx sqd squid:kill "stick@{{TAG}}"
+	npx sqd squid:kill "sonick@{{TAG}}"
 
 tail TAG:
-	npx sqd squid logs stick@{{TAG}} -f
+	npx sqd squid logs sonick@{{TAG}} -f
 
 brutal TAG=default:
 	npx sqd deploy -r -m {{TAG}}.yaml .
@@ -73,7 +73,7 @@ update-deps:
 	npx npm-check-updates -ux
 
 exec:
-	docker exec -it stick-db-1 psql -U postgres -d squid
+	docker exec -it sonick-db-1 psql -U postgres -d squid
 
 check: codegen build
 
