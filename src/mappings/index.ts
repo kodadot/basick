@@ -3,7 +3,7 @@ import { EntityWithId, create } from '@kodadot1/metasquid/entity'
 import * as erc721 from '../abi/ERC721'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
-import { BlockData, Context, EnMap, ItemStateUpdate, Log } from './utils/types'
+import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log } from './utils/types'
 import { CONTRACT_ADDRESS } from '../processor'
 import { CollectionEntity as CE, NFTEntity as NE } from '../model'
 import { findByIdListAsMap } from './utils/entity'
@@ -30,6 +30,8 @@ export async function mainFrame(ctx: Context): Promise<void> {
   const { contracts, tokens } = uniqueEntitySets(items)
   const collections = await finalizeCollections(contracts, ctx)
   const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
+  // processMetadata(finish)
+
 
   console.log(JSON.stringify(items, serializer, 2))
 }
@@ -56,37 +58,35 @@ type What = {
   items: ItemStateUpdate[],
 }
 
-export async function whatToDoWithTokens({ tokens, collections, items }: What, ctx: Context) {
+export async function whatToDoWithTokens(
+  { tokens, collections, items }: What,
+  ctx: Context
+) {
   // ctx.store.findBy(CE, {id: In([...collectionMap.keys()])})
   const knownTokens = await findByIdListAsMap(ctx.store, NE, tokens)
+  const events: EventEntity[] = []
 
   for (const item of items) {
     console.log(`APPLY ${item.interaction} on ${item.id}`)
-    const knownToken = knownTokens.get(item.id)
-    if (knownToken) {
-      // update
-      // Object.assign(knownToken, item.state)
-      knownTokens.set(item.id, { ...knownToken, ...item.state })
-    } else {
-      let unknownItem = create(NE, item.id, { })
-      if (item.applyFrom) {
-        const collection = collections.get(item.contract)!
-        item.applyFrom(collection)
-      }
-      if (item.applyTo) {
-        unknownItem = item.applyTo(unknownItem)
-      }
-      
-      knownTokens.set(item.id, unknownItem)
+    let knownToken = knownTokens.get(item.id) ?? create(NE, item.id, {})
+
+    if (item.applyFrom) {
+      const collection = collections.get(item.contract)!
+      item.applyFrom(collection)
+    }
+    if (item.applyTo) {
+      knownToken = item.applyTo(knownToken)
     }
 
+    events.push(item.event)
+    knownTokens.set(item.id, knownToken)
   }
 
   const values = [...knownTokens.values()]
   console.log(JSON.stringify(values, serializer, 2))
 
   await ctx.store.upsert([...knownTokens.values()])
-  await ctx.store.save([...knownTokens.values()])
+  await ctx.store.save(events)
 
   return knownTokens
 }
