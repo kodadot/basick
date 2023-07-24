@@ -1,15 +1,17 @@
 import { serializer } from '@kodadot1/metasquid'
-import { EntityWithId, create } from '@kodadot1/metasquid/entity'
+import { create } from '@kodadot1/metasquid/entity'
 import * as erc721 from '../abi/ERC721'
+import { Multicall } from '../abi/multicall'
+import { CollectionEntity as CE, NFTEntity as NE } from '../model'
+import { CONTRACT_ADDRESS } from '../processor'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
-import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log } from './utils/types'
-import { CONTRACT_ADDRESS } from '../processor'
-import { CollectionEntity as CE, NFTEntity as NE } from '../model'
+import { MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
 import { findByIdListAsMap } from './utils/entity'
-import { uniqueEntitySets } from './utils/unique'
-import { handleCollectionCreate } from './erc721/create'
+import { lastBatchBlock } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
+import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
+import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   const items = []
@@ -30,10 +32,10 @@ export async function mainFrame(ctx: Context): Promise<void> {
   const { contracts, tokens } = uniqueEntitySets(items)
   const collections = await finalizeCollections(contracts, ctx)
   const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
-  // processMetadata(finish)
+  const complete = await completeTokens(ctx, finish)
 
 
-  console.log(JSON.stringify(items, serializer, 2))
+  console.log('FINISHING', JSON.stringify(complete, serializer, 2))
 }
 
 function unwrapLog(log: Log, block: BlockData) {
@@ -89,6 +91,38 @@ export async function whatToDoWithTokens(
   await ctx.store.save(events)
 
   return knownTokens
+}
+
+async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
+  const collections = groupedItemsByCollection(tokenMap.keys())
+  const final: NE[] = []
+
+  for (const [contract, ids] of collections.entries()) {
+    const list = Array.from(ids)
+    const tokens = await multicallMetadataFetch(ctx, contract, list)
+    for (const [i, id] of list.entries()) {
+      const realId = createTokenId(contract, id)
+      const token = tokenMap.get(realId)!
+      token.metadata = tokens[i]
+      final.push(token)
+    }
+  }
+
+  await ctx.store.save(final)
+  return final
+}
+
+async function multicallMetadataFetch(ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
+  const tokenIds = tokens.map((id) => [BigInt(id)])
+  const contract = new Multicall(ctx, lastBatchBlock(ctx), MULTICALL_ADDRESS)
+  const metadata = await contract.aggregate(
+    erc721.functions.tokenURI,
+    collection,
+    tokenIds,
+    MULTICALL_BATCH_SIZE
+  )
+
+  return metadata
 }
 
 
