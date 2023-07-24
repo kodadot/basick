@@ -9,9 +9,9 @@ import {
 } from '@subsquid/evm-processor'
 import {Store} from '@subsquid/typeorm-store'
 import * as erc721 from './abi/ERC721'
-// import { Contracts } from './processable'
+import { Contracts } from './processable'
 
-export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
+// export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
 const archive = lookupArchive('zksync', { release: 'FireSquid' })
 
@@ -24,9 +24,10 @@ export const processor = new EvmBatchProcessor()
     .setFinalityConfirmation(75)
     .setBlockRange({
         from: 5_188_611
+        // from: 2_852_779
     })
     .addLog({
-        address: [CONTRACT_ADDRESS],
+        address: [Contracts.HueNft],
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })

@@ -1,20 +1,19 @@
-import { serializer } from '@kodadot1/metasquid'
 import { create } from '@kodadot1/metasquid/entity'
+import { logger } from '@kodadot1/metasquid/logger'
+import { Optional } from '@kodadot1/metasquid/types'
 import * as erc721 from '../abi/ERC721'
 import { Multicall } from '../abi/multicall'
 import { CollectionEntity as CE, MetadataEntity, NFTEntity as NE } from '../model'
-import { CONTRACT_ADDRESS } from '../processor'
+import { Contracts } from '../processable'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
+import { handleMetadata } from './shared/metadata'
 import { MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
 import { findByIdListAsMap } from './utils/entity'
 import { lastBatchBlock } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
 import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
-import { Optional } from '@kodadot1/metasquid/types'
-import { handleMetadata } from './shared/metadata'
-import { logger } from '@kodadot1/metasquid/logger'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
@@ -48,7 +47,7 @@ function unwrapLog(log: Log, block: BlockData) {
   switch (log.topics[0]) {
     case ERC721_TRANSFER:
       
-      if (log.address !== CONTRACT_ADDRESS) {
+      if (log.address !== Contracts.HueNft) {
         return null
       }
       return handle721Token(log, block)
