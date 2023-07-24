@@ -6,7 +6,7 @@ import { BaseBlock } from '@kodadot1/metasquid/types'
 import { BlockData } from '@subsquid/evm-processor'
 import { Interaction } from '../../model/generated/_interaction'
 import exp from 'constants'
-import { CollectionEntity, NFTEntity } from '../../model'
+import { CollectionEntity, NFTEntity, Event as EventEntity } from '../../model'
 // import { CollectionEntity, NFTEntity } from '../../model'
 
 export type BaseCall = {
@@ -46,9 +46,10 @@ export interface UpdateState<T, E = any> {
   contract: string,
   interaction?: Interaction
   state: Partial<T>
-  event: IEvent<Interaction>
+  event: EventEntity
   applyTo?(item: T): T
   applyFrom?(extra: E): E
+  // applyEvent?(item: T): EventEntity
 }
 
 // export type Optional<T> = T | null;
@@ -202,4 +203,4 @@ export enum DisplayType {
   'boost_percentage',
 }
 
-export { Interaction as Action } from '../../model'
+export { Interaction as Action, Event as EventEntity } from '../../model'
