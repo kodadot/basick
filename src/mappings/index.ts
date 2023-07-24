@@ -14,8 +14,10 @@ import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTok
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
 import { Optional } from '@kodadot1/metasquid/types'
 import { handleMetadata } from './shared/metadata'
+import { logger } from '@kodadot1/metasquid/logger'
 
 export async function mainFrame(ctx: Context): Promise<void> {
+  logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
   const items = []
 
   for (const block of ctx.blocks) {
@@ -31,13 +33,15 @@ export async function mainFrame(ctx: Context): Promise<void> {
     return
   }
 
+  logger.info(`Found ${items.length} items`)
+
   const { contracts, tokens } = uniqueEntitySets(items)
   const collections = await finalizeCollections(contracts, ctx)
   const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
   const complete = await completeTokens(ctx, finish)
 
 
-  console.log('FINISHING', JSON.stringify(complete, serializer, 2))
+  logger.info(`Batch completed, ${complete.length} tokens saved`)
 }
 
 function unwrapLog(log: Log, block: BlockData) {
@@ -47,7 +51,6 @@ function unwrapLog(log: Log, block: BlockData) {
       if (log.address !== CONTRACT_ADDRESS) {
         return null
       }
-      console.log('erc721 transfer', log.topics, log.address === CONTRACT_ADDRESS)
       return handle721Token(log, block)
     default:
       // console.log('unknown log', log.topics[0])
@@ -71,7 +74,7 @@ export async function whatToDoWithTokens(
   const events: EventEntity[] = []
 
   for (const item of items) {
-    console.log(`APPLY ${item.interaction} on ${item.id}`)
+    logger.debug(`APPLY ${item.interaction} on ${item.id}`)
     let knownToken = knownTokens.get(item.id) ?? create(NE, item.id, {})
 
     if (item.applyFrom) {
@@ -87,7 +90,6 @@ export async function whatToDoWithTokens(
   }
 
   const values = [...knownTokens.values()]
-  console.log(JSON.stringify(values, serializer, 2))
 
   await ctx.store.upsert(values)
   await ctx.store.save(events)
@@ -128,7 +130,7 @@ async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
 
   const metaList = await Promise.all(metadataFutures)
   const filtered = metaList.filter(m => m) as MetadataEntity[]
-  console.log('METADATA', JSON.stringify(filtered, serializer, 2))
+  logger.debug(`Saving ${filtered.length} metadata`)
   await ctx.store.save(filtered)
 
   await ctx.store.save(final)

@@ -18,13 +18,12 @@ const archive = lookupArchive('zksync', { release: 'FireSquid' })
 
 export const processor = new EvmBatchProcessor()
     .setDataSource({
-        // archive,
+        archive,
         chain: 'https://mainnet.era.zksync.io'
     })
     .setFinalityConfirmation(75)
     .setBlockRange({
-        from: 5_188_611,
-        to: 5_188_711
+        from: 5_188_611
     })
     .addLog({
         address: [CONTRACT_ADDRESS],
