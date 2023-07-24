@@ -1,9 +1,10 @@
+import { create } from '@kodadot1/metasquid/entity'
 import md5 from 'md5'
-import { contractOf, toBaseEvent, unwrap } from '../utils/extract'
+import { NFTEntity } from '../../model'
+import { createEvent } from '../shared/event'
+import { contractOf, toBaseEvent } from '../utils/extract'
 import { Action, ItemStateUpdate, Log, createTokenId, eventFrom } from '../utils/types'
 import { Transfer } from './utils'
-import { NFTEntity } from '../../model'
-import { create } from '@kodadot1/metasquid/entity'
 
 const OPERATION = Action.MINT
 
@@ -27,9 +28,11 @@ export function handleTokenCreate({ to, tokenId }: Transfer, context: Log): Item
       version: 721
     },
     interaction: OPERATION,
-    event: eventFrom(OPERATION, base, to),
+    event: createEvent(id, eventFrom(OPERATION, base, to)),
     applyTo(item): NFTEntity {
-      return create(NFTEntity, id, { ...item, ...this.state })
+      const final = create(NFTEntity, id, { ...item, ...this.state })
+      this.event.nft = final
+      return final
     },
     applyFrom(collection) {
       this.state = {
