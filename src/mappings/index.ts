@@ -2,7 +2,7 @@ import { serializer } from '@kodadot1/metasquid'
 import { create } from '@kodadot1/metasquid/entity'
 import * as erc721 from '../abi/ERC721'
 import { Multicall } from '../abi/multicall'
-import { CollectionEntity as CE, NFTEntity as NE } from '../model'
+import { CollectionEntity as CE, MetadataEntity, NFTEntity as NE } from '../model'
 import { CONTRACT_ADDRESS } from '../processor'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
@@ -12,6 +12,8 @@ import { lastBatchBlock } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
 import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
+import { Optional } from '@kodadot1/metasquid/types'
+import { handleMetadata } from './shared/metadata'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   const items = []
@@ -93,9 +95,11 @@ export async function whatToDoWithTokens(
   return knownTokens
 }
 
+// TODO: do only if event was mint.
 async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
   const collections = groupedItemsByCollection(tokenMap.keys())
   const final: NE[] = []
+  const metadataFutures: Promise<Optional<MetadataEntity>>[] = []
 
   for (const [contract, ids] of collections.entries()) {
     const list = Array.from(ids)
@@ -103,10 +107,27 @@ async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
     for (const [i, id] of list.entries()) {
       const realId = createTokenId(contract, id)
       const token = tokenMap.get(realId)!
-      token.metadata = tokens[i]
+      const metadata = tokens[i]
+      token.metadata = metadata
+      const getMeta = handleMetadata(metadata, ctx.store).then(m => {
+        if (m) {
+          token.meta = m
+          token.name = m.name
+          token.image = m.image
+          token.media = m.animationUrl
+        }
+        
+        return m
+      })
+      metadataFutures.push(getMeta)
       final.push(token)
     }
   }
+
+  const metaList = await Promise.all(metadataFutures)
+  const filtered = metaList.filter(m => m) as MetadataEntity[]
+  console.log('METADATA', JSON.stringify(filtered, serializer, 2))
+  await ctx.store.save(filtered)
 
   await ctx.store.save(final)
   return final
@@ -124,5 +145,6 @@ async function multicallMetadataFetch(ctx: Context, collection: string, tokens: 
 
   return metadata
 }
+
 
 
