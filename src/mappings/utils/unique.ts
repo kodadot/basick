@@ -32,7 +32,7 @@ export function uniqueEntitySets<T extends ItemStateUpdate>(items: T[]) {
   }
 }
 
-export function groupedItemsByCollection(items: Set<string> | string[]) {
+export function groupedItemsByCollection(items: IterableIterator<string>) {
   const collections = new Map<string, Set<string>>()
 
   for (const item of items) {
