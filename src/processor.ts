@@ -9,6 +9,7 @@ import {
 } from '@subsquid/evm-processor'
 import {Store} from '@subsquid/typeorm-store'
 import * as erc721 from './abi/ERC721'
+// import { Contracts } from './processable'
 
 export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
