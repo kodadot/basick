@@ -5,6 +5,7 @@ import { logger } from '@kodadot1/metasquid/logger'
 import { MetadataEntity as Metadata } from '../../model/generated'
 import { fetchMetadata } from '../utils/metadata'
 import { Store } from '@subsquid/typeorm-store'
+import md5 from 'md5'
 
 export async function handleMetadata(id: string, store: Store): Promise<Optional<Metadata>> {
   const meta = await store.get(Metadata, id) // await get<Metadata>(store, Metadata, id)
@@ -21,7 +22,7 @@ export async function handleMetadata(id: string, store: Store): Promise<Optional
   }
 
   const partial: Partial<Metadata> = {
-    id,
+    id: md5(id),
     description: metadata.description || '',
     image: metadata.image || metadata.thumbnailUri || metadata.mediaUri,
     animationUrl: metadata.animation_url || metadata.mediaUri,
