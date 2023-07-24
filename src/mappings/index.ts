@@ -89,7 +89,7 @@ export async function whatToDoWithTokens(
   const values = [...knownTokens.values()]
   console.log(JSON.stringify(values, serializer, 2))
 
-  await ctx.store.upsert([...knownTokens.values()])
+  await ctx.store.upsert(values)
   await ctx.store.save(events)
 
   return knownTokens
@@ -107,20 +107,22 @@ async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
     for (const [i, id] of list.entries()) {
       const realId = createTokenId(contract, id)
       const token = tokenMap.get(realId)!
-      const metadata = tokens[i]
-      token.metadata = metadata
-      const getMeta = handleMetadata(metadata, ctx.store).then(m => {
-        if (m) {
-          token.meta = m
-          token.name = m.name
-          token.image = m.image
-          token.media = m.animationUrl
-        }
-        
-        return m
-      })
-      metadataFutures.push(getMeta)
-      final.push(token)
+      if (!token.metadata) {
+        const metadata = tokens[i]
+        token.metadata = metadata
+        const getMeta = handleMetadata(metadata, ctx.store).then(m => {
+          if (m) {
+            token.meta = m
+            token.name = m.name
+            token.image = m.image
+            token.media = m.animationUrl
+          }
+          
+          return m
+        })
+        metadataFutures.push(getMeta)
+        final.push(token)
+      }
     }
   }
 
