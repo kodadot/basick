@@ -31,3 +31,16 @@ export function uniqueEntitySets<T extends ItemStateUpdate>(items: T[]) {
     tokens,
   }
 }
+
+export function groupedItemsByCollection(items: Set<string> | string[]) {
+  const collections = new Map<string, Set<string>>()
+
+  for (const item of items) {
+    const [contract, id] = item.split('-')
+    const collection = collections.get(contract) ?? new Set<string>()
+    collection.add(id)
+    collections.set(contract, collection)
+  }
+
+  return collections
+}
