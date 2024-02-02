@@ -13,14 +13,24 @@ import { Contracts } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
-const archive = lookupArchive('zksync', { release: 'FireSquid' })
+const archive = lookupArchive('zksync-mainnet')
+const chain = 'https://mainnet.era.zksync.io'
 
 
 export const processor = new EvmBatchProcessor()
-    .setDataSource({
-        archive,
-        chain: 'https://mainnet.era.zksync.io'
+    // See https://docs.subsquid.io/evm-indexing/supported-networks/
+    .setGateway(archive)
+    // Chain RPC endpoint is required for
+    //  - indexing unfinalized blocks https://docs.subsquid.io/basics/unfinalized-blocks/
+    //  - querying the contract state https://docs.subsquid.io/evm-indexing/query-state/
+    .setRpcEndpoint({
+        // Set the URL via .env for local runs or via secrets when deploying to Subsquid Cloud
+        // https://docs.subsquid.io/deploy-squid/env-variables/
+        url: chain,
+        // More RPC connection options at https://docs.subsquid.io/evm-indexing/configuration/initialization/#set-data-source
+        rateLimit: 10
     })
+    .setRpcDataIngestionSettings({ disabled: true })
     .setFinalityConfirmation(75)
     .setBlockRange({
         from: 5_188_611
