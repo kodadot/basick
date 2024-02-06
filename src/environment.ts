@@ -11,6 +11,7 @@ export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv || 'immuta
 export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 
 // https://github.com/zkSync-Community-Hub/zksync-developers/discussions/228
+// https://docs.immutable.com/docs/zkevm/architecture/network-information/
 const nodes: Record<PossibleChain, string> = {
     'zksync-mainnet': 'https://mainnet.era.zksync.io',
     'zksync-sepolia': 'https://sepolia.era.zksync.dev',
