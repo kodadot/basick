@@ -1,4 +1,3 @@
-import {lookupArchive} from '@subsquid/archive-registry'
 import {
     BlockHeader,
     DataHandlerContext,
@@ -7,14 +6,15 @@ import {
     Log as _Log,
     Transaction as _Transaction,
 } from '@subsquid/evm-processor'
-import {Store} from '@subsquid/typeorm-store'
+import { Store } from '@subsquid/typeorm-store'
 import * as erc721 from './abi/ERC721'
+import { disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
 import { Contracts } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
-const archive = lookupArchive('zksync-mainnet')
-const chain = 'https://mainnet.era.zksync.io'
+const archive = getArchiveUrl() // lookupArchive('zksync-mainnet')
+const chain = getNodeUrl() // 'https://mainnet.era.zksync.io'
 
 
 export const processor = new EvmBatchProcessor()
@@ -30,14 +30,14 @@ export const processor = new EvmBatchProcessor()
         // More RPC connection options at https://docs.subsquid.io/evm-indexing/configuration/initialization/#set-data-source
         rateLimit: 10
     })
-    .setRpcDataIngestionSettings({ disabled: true })
+    .setRpcDataIngestionSettings({ disabled: disabledRPC })
     .setFinalityConfirmation(75)
     .setBlockRange({
-        from: 5_188_611
+        from: 0
         // from: 2_852_779
     })
     .addLog({
-        address: [Contracts.HueNft],
+        address: [Contracts.LizardLabs],
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })

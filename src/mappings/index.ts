@@ -8,7 +8,7 @@ import { Contracts } from '../processable'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
 import { handleMetadata } from './shared/metadata'
-import { MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
+import { BASE_URI_MAP, MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
 import { findByIdListAsMap } from './utils/entity'
 import { lastBatchBlock } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
@@ -47,7 +47,7 @@ function unwrapLog(log: Log, block: BlockData) {
   switch (log.topics[0]) {
     case ERC721_TRANSFER:
       
-      if (log.address !== Contracts.HueNft) {
+      if (log.address !== Contracts.LizardLabs) {
         return null
       }
       return handle721Token(log, block)
@@ -104,7 +104,7 @@ async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
 
   for (const [contract, ids] of collections.entries()) {
     const list = Array.from(ids)
-    const tokens = await multicallMetadataFetch(ctx, contract, list)
+    const tokens = await baseUriMetadataFetch(ctx, contract, list)
     for (const [i, id] of list.entries()) {
       const realId = createTokenId(contract, id)
       const token = tokenMap.get(realId)!
@@ -135,8 +135,8 @@ async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
   await ctx.store.save(final)
   return final
 }
-
-async function multicallMetadataFetch(ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
+// Multicall does not exist in Immutable
+async function _multicallMetadataFetch(ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
   const tokenIds = tokens.map((id) => [BigInt(id)])
   const contract = new Multicall(ctx, lastBatchBlock(ctx), MULTICALL_ADDRESS)
   const metadata = await contract.aggregate(
@@ -146,6 +146,16 @@ async function multicallMetadataFetch(ctx: Context, collection: string, tokens: 
     MULTICALL_BATCH_SIZE
   )
 
+  return metadata
+}
+
+async function baseUriMetadataFetch(_ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
+  const baseUri = BASE_URI_MAP[collection as Contracts]
+  if (!baseUri) {
+    console.error(`No base URI for ${collection}`)
+    return []
+  }
+  const metadata = tokens.map((id) => `${baseUri}${id}`)
   return metadata
 }
 

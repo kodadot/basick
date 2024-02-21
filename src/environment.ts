@@ -6,7 +6,7 @@ export type ChainEnv = 'mainnet'
 type ChainWithEnv = `${Chain}-${ChainEnv}`
 type PossibleChain = ChainWithEnv | `${Chain}-${string}`
 
-export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv || 'immutable-zkevm-testnet'
+export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv  || 'immutable-zkevm-mainnet'
 
 export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 
@@ -25,6 +25,7 @@ const NODE_URL = nodes[CHAIN]
 
 
 export const isProd = CHAIN.endsWith('mainnet')
+export const disabledRPC = process.env.DISABLED_RPC === 'true' || !isProd
 
 console.log(`Using ${CHAIN} chain ${isProd ? 'production' : 'development'} environment`)
 
