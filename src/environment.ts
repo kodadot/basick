@@ -6,7 +6,7 @@ export type ChainEnv = 'mainnet'
 type ChainWithEnv = `${Chain}-${ChainEnv}`
 type PossibleChain = ChainWithEnv | `${Chain}-${string}`
 
-export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv || 'immutable-zkevm-testnet'
+export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv  || 'immutable-zkevm-mainnet'
 
 export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 
