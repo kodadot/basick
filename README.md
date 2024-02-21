@@ -94,3 +94,11 @@ The layout of `lib` must reflect `src`.
 * Database schema must be defined in `schema.graphql`.
 * Database migrations must reside in `db/migrations` and must be plain js files.
 * `sqd(1)` and `squid-*(1)` executables consult `.env` file for environment variables.
+
+## DEV hacks
+
+1. EVM contract address needs to be all lowercase
+
+```bash
+pbpaste | tr '[:upper:]' '[:lower:]'
+```
