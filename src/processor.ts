@@ -10,11 +10,12 @@ import {
 import {Store} from '@subsquid/typeorm-store'
 import * as erc721 from './abi/ERC721'
 import { Contracts } from './processable'
+import { getArchiveUrl, getNodeUrl } from './environment'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
-const archive = lookupArchive('zksync-mainnet')
-const chain = 'https://mainnet.era.zksync.io'
+const archive = getArchiveUrl() // lookupArchive('zksync-mainnet')
+const chain = getNodeUrl() // 'https://mainnet.era.zksync.io'
 
 
 export const processor = new EvmBatchProcessor()
@@ -33,11 +34,11 @@ export const processor = new EvmBatchProcessor()
     .setRpcDataIngestionSettings({ disabled: true })
     .setFinalityConfirmation(75)
     .setBlockRange({
-        from: 5_188_611
+        from: 0
         // from: 2_852_779
     })
     .addLog({
-        address: [Contracts.HueNft],
+        address: [Contracts.LizardLabs],
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })
