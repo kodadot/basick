@@ -76,7 +76,7 @@ update-deps:
 	npx npm-check-updates -ux
 
 exec:
-	docker exec -it sonick-db-1 psql -U postgres -d squid
+	docker exec -it synck-db-1 psql -U postgres -d squid
 
 check: codegen build
 
