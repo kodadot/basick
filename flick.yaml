@@ -1,7 +1,7 @@
 manifestVersion: subsquid.io/v0.1
-name: synck
+name: flick
 version: 1
-description: 'SubSquid indexer for ZKSync'
+description: 'SubSquid indexer for Immutable zkEVM chains'
 build: 
 deploy:
   addons:
@@ -14,7 +14,7 @@ deploy:
       - node
       - lib/main
     env:
-      CHAIN: zksync-mainnet
+      CHAIN: immutable-zkevm-mainnet
   api:
     cmd:
       - npx
