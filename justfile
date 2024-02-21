@@ -87,3 +87,7 @@ evm-typegen TAG:
 
 erc TAG:
 	npx squid-evm-typegen src/abi abi/ERC{{TAG}}.json
+
+archive-registry:
+	npx squid-archive-registry -t evm
+
