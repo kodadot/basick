@@ -28,7 +28,7 @@ export const processor = new EvmBatchProcessor()
         // https://docs.subsquid.io/deploy-squid/env-variables/
         url: chain,
         // More RPC connection options at https://docs.subsquid.io/evm-indexing/configuration/initialization/#set-data-source
-        rateLimit: 10
+        rateLimit: 15
     })
     .setRpcDataIngestionSettings({ disabled: disabledRPC })
     .setFinalityConfirmation(75)
@@ -38,6 +38,11 @@ export const processor = new EvmBatchProcessor()
     })
     .addLog({
         address: [Contracts.LizardLabs],
+        topic0: [erc721.events.Transfer.topic],
+        // transaction: true
+    })
+    .addLog({
+        address: [Contracts.SuperPets],
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })
