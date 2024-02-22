@@ -46,8 +46,8 @@ export async function mainFrame(ctx: Context): Promise<void> {
 function unwrapLog(log: Log, block: BlockData) {
   switch (log.topics[0]) {
     case ERC721_TRANSFER:
-      
-      if (log.address !== Contracts.LizardLabs) {
+
+      if (![Contracts.LizardLabs, Contracts.SuperPets].includes(log.address as Contracts)) {
         return null
       }
       return handle721Token(log, block)
@@ -118,7 +118,7 @@ async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
             token.image = m.image
             token.media = m.animationUrl
           }
-          
+
           return m
         })
         metadataFutures.push(getMeta)
@@ -158,6 +158,3 @@ async function baseUriMetadataFetch(_ctx: Context, collection: string, tokens: A
   const metadata = tokens.map((id) => `${baseUri}${id}`)
   return metadata
 }
-
-
-
