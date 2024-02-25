@@ -38,7 +38,7 @@ export function handleCollectionCreate(collection: CollectionEntity, context: Co
   const cache =  ContractsMap[collection.id as Contracts];
 
   if (cache) {
-    return create(CollectionEntity, collection.id, { ...cache, hash: md5(collection.id) })
+    return create(CollectionEntity, collection.id, {...cache, hash: md5(collection.id) })
   }
   
   return collection

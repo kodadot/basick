@@ -42,5 +42,13 @@ function toMap(
     issuer,
     updatedAt: new Date(),
     createdAt: new Date(),
+    distribution: 0,
+    floor: BigInt(0),
+    highestSale: BigInt(0),
+    nftCount: 0,
+    ownerCount: 0,
+    supply: max,
+    volume: BigInt(0),
+    version: 1
   };
 }
