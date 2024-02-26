@@ -4,6 +4,7 @@ import { CollectionEntity, CollectionType } from "./model";
 export enum Contracts {
   LizardLabs = "0x4cd9d7819c01c85f0130aef429ab32d0465672a2",
   SuperPets = "0xb2155a27832ae6d61e6041e13e8c7421ae025d64",
+  Hunter = "0x34a0321e464f7afba27b5d640707ab01660705bd"
 }
 
 export const ContractsMap: Record<Contracts, any> = {
@@ -21,7 +22,7 @@ export const ContractsMap: Record<Contracts, any> = {
     "0x612D0C4b92a079D7603C2D898128a72262A141B3",
     "https://mt-test-2.s3.ap-southeast-2.amazonaws.com/metadata/contract-metadata/contract.json",
   ),
-  // [Contracts.Veggies]: toMap('zkVeggies', 'ZKV', 1545, '0xb3306534236f12dcf2190488e046a359c9167fb0', 'bafkreidvvvgobvz6pb66rzbehfipelmi5q6xpblexy25hu5x3z7w6ejhna'),
+  [Contracts.Hunter]: toMap('Hunter', 'HUNTER', 150, '0x6349D9817a768baA04137553BEF5Ea5AA2052F0B', 'https://api-imx.boomland.io/api/h/0/'),
 };
 
 function toMap(

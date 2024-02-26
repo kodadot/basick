@@ -10,4 +10,5 @@ export const MULTICALL_BATCH_SIZE = 100
 export const BASE_URI_MAP: Record<Partial<Contracts>, string> = {
   [Contracts.LizardLabs]: 'ipfs://QmU1XwYQ79WQmS87e1UCt5F2EDEaiLdGHb22As9A5UminY/',
   [Contracts.SuperPets]: 'https://mt-test-2.s3.ap-southeast-2.amazonaws.com/metadata/',
+  [Contracts.Hunter]: 'https://api-imx.boomland.io/api/h/0/',
 }
