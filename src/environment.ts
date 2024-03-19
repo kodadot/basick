@@ -1,6 +1,6 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 
-export type Chain = 'zksync' | 'immutable-zkevm'
+export type Chain = 'zksync' | 'immutable-zkevm' | 'base'
 export type ChainEnv = 'mainnet' 
 // | 'testnet' 
 type ChainWithEnv = `${Chain}-${ChainEnv}`
@@ -12,11 +12,14 @@ export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 
 // https://github.com/zkSync-Community-Hub/zksync-developers/discussions/228
 // https://docs.immutable.com/docs/zkevm/architecture/network-information/
+// https://docs.base.org/network-information/
 const nodes: Record<PossibleChain, string> = {
     'zksync-mainnet': 'https://mainnet.era.zksync.io',
     'zksync-sepolia': 'https://sepolia.era.zksync.dev',
     'immutable-zkevm-mainnet': 'https://rpc.immutable.com',
     'immutable-zkevm-testnet': 'https://rpc.testnet.immutable.com',
+    'base-mainnet': 'https://mainnet.base.org',
+    'base-sepolia': 'https://sepolia.base.org',
 }
 
 // Setup
