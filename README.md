@@ -102,3 +102,5 @@ The layout of `lib` must reflect `src`.
 ```bash
 pbpaste | tr '[:upper:]' '[:lower:]'
 ```
+
+2. [Indexing proxy contracts](https://docs.subsquid.io/sdk/resources/evm/proxy-contracts/)
