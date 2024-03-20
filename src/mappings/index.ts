@@ -47,7 +47,7 @@ function unwrapLog(log: Log, block: BlockData) {
   switch (log.topics[0]) {
     case ERC721_TRANSFER:
 
-      if (![Contracts.LizardLabs, Contracts.SuperPets].includes(log.address as Contracts)) {
+      if (![Contracts.Conjunto, Contracts.Bloquinhos, Contracts.Memories].includes(log.address as Contracts)) {
         return null
       }
       return handle721Token(log, block)
