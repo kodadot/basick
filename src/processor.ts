@@ -37,12 +37,17 @@ export const processor = new EvmBatchProcessor()
         // from: 2_852_779
     })
     .addLog({
-        address: [Contracts.LizardLabs],
+        address: [Contracts.Conjunto],
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })
     .addLog({
-        address: [Contracts.SuperPets],
+        address: [Contracts.Bloquinhos],
+        topic0: [erc721.events.Transfer.topic],
+        // transaction: true
+    })
+    .addLog({
+        address: [Contracts.Memories],
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })
