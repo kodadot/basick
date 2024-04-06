@@ -28,7 +28,8 @@ import { CollectionEntity, CollectionType } from "./model";
 export enum Contracts {
   Conjunto = "0x25194dfc7981d8a13367fe19b5b1c5fc010d535f",
   Bloquinhos = "0x3c93690bbe585475fdfadab3f59b4604008c7ac4",
-  Memories = "0x3c549c45588fb42a94ca7b84081df43d95952c01"
+  Memories = "0x3c549c45588fb42a94ca7b84081df43d95952c01",
+  Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373"
 }
 
 export const ContractsMap: Record<Contracts, any> = {
@@ -52,6 +53,13 @@ export const ContractsMap: Record<Contracts, any> = {
     35,
     "0x35dFa1Dbb4b8e82E8a924C53E3649112E45a05F4",
     "https://arweave.net/UIV7b488550HzoAdpwRO7laTUDq9VPOD0YEP8sQfkaU",
+  ),
+  [Contracts.Vortices]: toMap(
+    "Vortices",
+    "VTX",
+    128,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreicthpidyo3gznp3uuezvweiur7xcbo5qcwgw3x4teui2psoqxxbgq",
   ),
 };
 
