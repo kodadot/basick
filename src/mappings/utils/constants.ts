@@ -13,4 +13,5 @@ export const BASE_URI_MAP: Record<Partial<Contracts>, string> = {
   [Contracts.Conjunto]: 'https://highlight-creator-assets.highlight.xyz/main/base-dir/b499ce45-3e8f-413e-93a2-74c46c23a93e/onChainDir/',
   [Contracts.Bloquinhos]: 'https://highlight-creator-assets.highlight.xyz/main/base-dir/ab2b46e3-156a-41de-bc89-8018aa057237/onChainDir/',
   [Contracts.Memories]: 'https://highlight-creator-assets.highlight.xyz/main/base-dir/e9cba8ba-21a4-4468-9813-a3fca52bb53e/onChainDir/',
+  [Contracts.Vortices]: 'https://dyndata.deno.dev/base/content/0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373/'
 }
