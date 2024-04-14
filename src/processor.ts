@@ -56,6 +56,11 @@ export const processor = new EvmBatchProcessor()
         topic0: [erc721.events.Transfer.topic],
         // transaction: true
     })
+    .addLog({
+        address: [Contracts.Higher],
+        topic0: [erc721.events.Transfer.topic],
+        // transaction: true
+    })
     .setFields({
         log: {
             topics: true,

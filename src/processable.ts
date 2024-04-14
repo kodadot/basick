@@ -29,7 +29,8 @@ export enum Contracts {
   Conjunto = "0x25194dfc7981d8a13367fe19b5b1c5fc010d535f",
   Bloquinhos = "0x3c93690bbe585475fdfadab3f59b4604008c7ac4",
   Memories = "0x3c549c45588fb42a94ca7b84081df43d95952c01",
-  Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373"
+  Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373",
+  Higher = "0x0b6504d95f9d550d274468fb6de5d13b7e64aa6a",
 }
 
 export const ContractsMap: Record<Contracts, any> = {
@@ -61,7 +62,16 @@ export const ContractsMap: Record<Contracts, any> = {
     "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
     "ipfs://bafkreicthpidyo3gznp3uuezvweiur7xcbo5qcwgw3x4teui2psoqxxbgq",
   ),
+  [Contracts.Higher]: toMap(
+    "Higher",
+    "↑",
+    256,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreickjpqtqulirvugyqupeogbvum2uqsrp5focif5427fd2fzgywo4u",
+  ),
 };
+
+export const contractList: string[] = Object.keys(ContractsMap);
 
 function toMap(
   name: string,

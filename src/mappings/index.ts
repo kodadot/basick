@@ -4,7 +4,7 @@ import { Optional } from '@kodadot1/metasquid/types'
 import * as erc721 from '../abi/ERC721'
 import { Multicall } from '../abi/multicall'
 import { CollectionEntity as CE, MetadataEntity, NFTEntity as NE } from '../model'
-import { Contracts } from '../processable'
+import { Contracts, contractList } from '../processable'
 import { handler as handle721Token } from './erc721'
 import { ERC721_TRANSFER } from './erc721/utils'
 import { handleMetadata } from './shared/metadata'
@@ -47,7 +47,7 @@ function unwrapLog(log: Log, block: BlockData) {
   switch (log.topics[0]) {
     case ERC721_TRANSFER:
 
-      if (![Contracts.Conjunto, Contracts.Bloquinhos, Contracts.Memories, Contracts.Vortices].includes(log.address as Contracts)) {
+      if (!contractList.includes(log.address as Contracts)) {
         return null
       }
       return handle721Token(log, block)
