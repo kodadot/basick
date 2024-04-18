@@ -31,6 +31,7 @@ export enum Contracts {
   Memories = "0x3c549c45588fb42a94ca7b84081df43d95952c01",
   Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373",
   Higher = "0x0b6504d95f9d550d274468fb6de5d13b7e64aa6a",
+  Unfoldings = "0xc029b380f8a451cfd9e5124fa9fcad4397b8c119%",
 }
 
 export const ContractsMap: Record<Contracts, any> = {
@@ -68,6 +69,13 @@ export const ContractsMap: Record<Contracts, any> = {
     256,
     "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
     "ipfs://bafkreickjpqtqulirvugyqupeogbvum2uqsrp5focif5427fd2fzgywo4u",
+  ),
+  [Contracts.Unfoldings]: toMap(
+    "Unfoldings",
+    "UNFLD",
+    128,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreib5pt53graj4wexhpgj3qrl37m3bsgjf3hz5muogqccdtutaq2huq",
   ),
 };
 
