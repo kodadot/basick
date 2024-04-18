@@ -31,7 +31,7 @@ export enum Contracts {
   Memories = "0x3c549c45588fb42a94ca7b84081df43d95952c01",
   Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373",
   Higher = "0x0b6504d95f9d550d274468fb6de5d13b7e64aa6a",
-  Unfoldings = "0xc029b380f8a451cfd9e5124fa9fcad4397b8c119%",
+  Unfoldings = "0xc029b380f8a451cfd9e5124fa9fcad4397b8c119",
 }
 
 export const ContractsMap: Record<Contracts, any> = {
