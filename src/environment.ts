@@ -30,7 +30,7 @@ const NODE_URL = nodes[CHAIN]
 export const isProd = CHAIN.endsWith('mainnet')
 export const disabledRPC = process.env.DISABLED_RPC === 'true' || !isProd
 
-console.log(`Using ${CHAIN} chain ${isProd ? 'production' : 'development'} environment`)
+console.table({ CHAIN, ARCHIVE_URL, NODE_URL, STARTING_BLOCK, disabledRPC, environment: isProd ? 'production' : 'development'})
 
 export const getArchiveUrl = (): string => ARCHIVE_URL
 export const getNodeUrl = (): string => NODE_URL
