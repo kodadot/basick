@@ -1,0 +1,37 @@
+manifestVersion: subsquid.io/v0.1
+name: shack
+version: 4
+description: 'SubSquid indexer for Base (Sepolia)'
+build:
+deploy:
+  addons:
+    postgres:
+      config:
+        statement_timeout: 30000
+        log_min_duration_statement: 5000
+  processor:
+    cmd:
+      - node
+      - lib/main
+    env:
+      CHAIN: base-sepolia
+  api:
+    cmd:
+      - npx
+      - squid-graphql-server
+      - '--subscriptions'
+      - '--dumb-cache'
+      - in-memory
+      - '--dumb-cache-ttl'
+      - '1000'
+      - '--dumb-cache-size'
+      - '100'
+      - '--dumb-cache-max-age'
+      - '1000'
+
+scale:
+  dedicated: false
+  addons:
+    postgres:
+      storage: 1G
+      profile: small
