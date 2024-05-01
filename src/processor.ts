@@ -8,7 +8,8 @@ import {
 } from '@subsquid/evm-processor'
 import { Store } from '@subsquid/typeorm-store'
 import * as erc721 from './abi/ERC721'
-import { disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
+import * as registry from './abi/Registry'
+import { STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
 import { Contracts, contractList } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
@@ -33,7 +34,7 @@ export const processor = new EvmBatchProcessor()
     .setRpcDataIngestionSettings({ disabled: disabledRPC })
     .setFinalityConfirmation(75)
     .setBlockRange({
-        from: 0
+        from: STARTING_BLOCK
         // from: 2_852_779
     })
     .setFields({
@@ -42,15 +43,24 @@ export const processor = new EvmBatchProcessor()
             data: true,
             // transactionHash: true
         }
-    });
-
-    contractList.forEach((contract) => {
-        processor.addLog({
-            address: [contract],
-            topic0: [erc721.events.Transfer.topic],
-            // transaction: true
-        })
     })
+    .addLog({
+        address: ['0x672c524543454a5ffb0840131158a26296b0426c'],
+        topic0: [registry.events.CollectionRegistered.topic],
+        // transaction: true
+    })
+    // .addLog({
+    //     topic0: [erc721.events.Transfer.topic],
+    //     // transaction: true
+    // })
+
+    // contractList.forEach((contract) => {
+    //     processor.addLog({
+    //         address: [contract],
+    //         topic0: [erc721.events.Transfer.topic],
+    //         // transaction: true
+    //     })
+    // })
 
     // .addLog({
     //     address: [Contracts.Conjunto],
