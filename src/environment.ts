@@ -10,6 +10,10 @@ export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv  || 'immut
 
 export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 
+export const ENV_CONTRACTS = {
+    REGISTRY: process.env.CONTRACT_REGISTRY || '0x672c524543454a5ffb0840131158a26296b0426c'
+}
+
 // https://github.com/zkSync-Community-Hub/zksync-developers/discussions/228
 // https://docs.immutable.com/docs/zkevm/architecture/network-information/
 // https://docs.base.org/network-information/
