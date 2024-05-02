@@ -9,7 +9,7 @@ import {
 import { Store } from '@subsquid/typeorm-store'
 import * as erc721 from './abi/ERC721'
 import * as registry from './abi/Registry'
-import { STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
+import { ENV_CONTRACTS, STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
 import { Contracts, contractList } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
@@ -45,7 +45,7 @@ export const processor = new EvmBatchProcessor()
         }
     })
     .addLog({
-        address: ['0x672c524543454a5ffb0840131158a26296b0426c'],
+        address: [ENV_CONTRACTS.REGISTRY],
         topic0: [registry.events.CollectionRegistered.topic],
         // transaction: true
     })
