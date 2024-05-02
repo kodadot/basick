@@ -83,6 +83,116 @@ export type OptionalMeta = {
   metadata?: string
 }
 
+// struct CollectionInfo {
+//   string name;
+//   string symbol;
+//   string contractURI;
+//   string baseURI;
+//   uint256 maxSupply;
+//   address royaltyRecipient;
+//   uint256 royaltyPercentageBps;
+//   CollectionType collectionType;
+//   MintInfo mintInfo;
+// }
+
+// make this a type
+enum CollectionType {
+  ERC721,
+  ERC1155
+}
+
+enum MintType {
+  Public,
+  Issuer
+}
+
+// struct MintInfo {
+//   uint256 price;
+//   address token;
+//   bytes4 selector;
+//   MintType mintType;
+// }
+
+export type MintInfo = {
+  price: bigint
+  token: string
+  selector: string
+  mintType: MintType
+}
+
+export type CollectionInfo = {
+  name: string
+  symbol: string
+  contractURI: string
+  baseURI: string
+  maxSupply: bigint
+  royaltyRecipient: string
+  royaltyPercentageBps: bigint
+  collectionType: CollectionType
+  mintInfo: MintInfo
+}
+
+// event CollectionRegistered(
+//   address indexed collection, address indexed creator, address indexed owner, CollectionInfo info
+// );
+
+export type CollectionRegisteredEvent = {
+  collection: string
+  creator: string
+  owner: string
+  info: CollectionInfo
+}
+
+// event TokenRegistered(address indexed collection, uint256 indexed tokenId, address indexed owner, string tokenURI);
+
+export type TokenRegisteredEvent = {
+  collection: string
+  sn: string
+  owner: string
+  metadata: string
+}
+
+// event TokenListRegistered(
+//   address indexed collection, uint256[] indexed tokenIds, address[] indexed owners, string[] tokenURIs
+// );
+
+export type TokenListRegisteredEvent = {
+  collection: string
+  tokenIds: bigint[]
+  owners: string[]
+  tokenURIs: string[]
+}
+
+// event RoyaltySet(address indexed collection, address indexed recipient, uint256 indexed royaltyBps);
+
+export type RoyaltySetEvent = {
+  collection: string
+  recipient: string
+  royaltyBps: bigint
+}
+
+// event CollectionRemoved(address indexed collection);
+
+export type CollectionRemovedEvent = {
+  collection: string
+}
+
+// event MintInfoUpdated(address indexed collection, MintInfo mintInfo);
+
+export type MintInfoUpdatedEvent = {
+  collection: string
+  mintInfo: MintInfo
+}
+
+// event AttributeSet(address indexed collection, string indexed key, string indexed value);
+
+export type AttributeSetEvent = {
+  collection: string
+  key: string
+  value: string
+}
+
+
 export type CreateCollectionEvent = BaseCollectionEvent &
   OptionalMeta & {
     type: string
