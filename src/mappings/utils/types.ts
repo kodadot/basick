@@ -5,7 +5,6 @@ import { Block, Context, Fields, Log, Transaction } from '../../processor'
 import { BaseBlock } from '@kodadot1/metasquid/types'
 import { BlockData } from '@subsquid/evm-processor'
 import { Interaction } from '../../model/generated/_interaction'
-import exp from 'constants'
 import { CollectionEntity, NFTEntity, Event as EventEntity } from '../../model'
 // import { CollectionEntity, NFTEntity } from '../../model'
 
@@ -68,6 +67,7 @@ export type CollectionUpdate = Partial<any>
 
 
 export type ItemStateUpdate = UpdateState<NFTEntity, CollectionEntity>
+export type CollectionStateUpdate = UpdateState<CollectionEntity, never>
 
 export type WithId = {
   id: string
