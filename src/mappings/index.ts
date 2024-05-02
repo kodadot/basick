@@ -2,15 +2,18 @@ import { create } from '@kodadot1/metasquid/entity'
 import { logger } from '@kodadot1/metasquid/logger'
 import { Optional } from '@kodadot1/metasquid/types'
 import * as erc721 from '../abi/ERC721'
+import * as registry from '../abi/Registry'
 import { Multicall } from '../abi/multicall'
-import { CollectionEntity as CE, MetadataEntity, NFTEntity as NE } from '../model'
-import { Contracts, contractList } from '../processable'
-import { handler as handle721Token } from './erc721'
-import { ERC721_TRANSFER } from './erc721/utils'
+import { ENV_CONTRACTS } from '../environment'
+import { CollectionEntity as CE, Interaction, MetadataEntity, NFTEntity as NE } from '../model'
+import { Contracts } from '../processable'
+import { handler as handle721Token, ERC721_TRANSFER } from './erc721'
+import { handler as handleRegistry, REGISTRY } from './registry'
 import { handleMetadata } from './shared/metadata'
 import { BASE_URI_MAP, MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
 import { findByIdListAsMap } from './utils/entity'
-import { lastBatchBlock } from './utils/evm'
+import { lastBatchBlock, mainTopic } from './utils/evm'
+import { debug } from './utils/logger'
 import { finalizeCollections } from './utils/lookups'
 import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
@@ -18,12 +21,18 @@ import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
   const items = []
+  const registered = []
 
   for (const block of ctx.blocks) {
     for (const log of block.logs) {
       const item = unwrapLog(log, block)
       if (item) {
-        items.push(item)
+        if (item.interaction === Interaction.CREATE) {
+          registered.push(item)
+        } else {
+          items.push(item)
+        }
+        
       }
     }
   }
@@ -44,18 +53,16 @@ export async function mainFrame(ctx: Context): Promise<void> {
 }
 
 function unwrapLog(log: Log, block: BlockData) {
-  switch (log.topics[0]) {
-    case ERC721_TRANSFER:
-
-      if (!contractList.includes(log.address as Contracts)) {
-        return null
-      }
-      return handle721Token(log, block)
-    default:
-      // console.log('unknown log', log.topics[0])
-      return null
-    // throw new Error('unknown log')
+  if (log.address === ENV_CONTRACTS.REGISTRY) {
+    return handleRegistry(log, block)
   }
+
+  if (mainTopic(log) == ERC721_TRANSFER) {
+    return handle721Token(log, block)
+  }
+
+  console.log('unknown log', mainTopic(log))
+  return null
 }
 
 type What = {
