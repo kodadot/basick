@@ -1,5 +1,5 @@
 
-import { Block, Context, Fields, Log, Transaction } from '../../processor'
+import { Block, Process, Fields, Log, Transaction } from '../../processor'
 // export { Fields, Context, Block, Log, Transaction } from '../../processor'
 
 import { BaseBlock } from '@kodadot1/metasquid/types'
@@ -16,7 +16,7 @@ export type BaseCall = {
 
 
 // export { Interaction }
-export { Block, Context, Fields, Log, Transaction, BlockData }
+export { Block, Process as Context, Fields, Log, Transaction, BlockData }
 
 export function eventFrom<T extends Interaction>(interaction: T, { blockNumber, caller, timestamp }: BaseCall, meta: string, currentOwner?: string): IEvent<T> {
   return {
@@ -265,8 +265,8 @@ export type WithCount = {
 // }
 
 export type WithHooks = {
-  before?: (ctx: Context) => void | Promise<void>
-  after?: (ctx: Context) => void | Promise<void>
+  before?: (ctx: Process) => void | Promise<void>
+  after?: (ctx: Process) => void | Promise<void>
 }
 
 export type EventExtra = WithBlock & WithCaller & WithContract
