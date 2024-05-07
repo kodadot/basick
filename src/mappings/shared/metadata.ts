@@ -34,6 +34,7 @@ export async function handleMetadata(id: string, store: Store): Promise<Optional
   }
 
   const final = create<Metadata>(Metadata, id, partial)
+  await store.save(final)
   const elapsed = (Date.now() - start) / 1000
   const message = `⏱ [META] ${logId} ${elapsed}s`
   if (elapsed >= 30) {
