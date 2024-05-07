@@ -79,6 +79,11 @@ export async function whatToDoWithTokens(
   const events: EventEntity[] = []
 
   for (const item of items) {
+    if (collections.has(item.contract)) {
+      logger.debug(`Skipping ${item.contract}-related event ${item.interaction} on ${item.id}`)
+      continue
+    }
+
     logger.debug(`APPLY ${item.interaction} on ${item.id}`)
     let knownToken = knownTokens.get(item.id) ?? create(NE, item.id, {})
 
