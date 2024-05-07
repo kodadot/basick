@@ -6,6 +6,7 @@ export function getCreateCollectionEvent(ctx: Log): CollectionRegisteredEvent {
 
   const x = event.decode(ctx)
   return {
+    // id: x.collection  ,
     collection: x.collection,
     creator: x.creator,
     owner: x.owner,
