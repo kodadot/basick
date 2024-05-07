@@ -1,26 +1,25 @@
-import { create } from '@kodadot1/metasquid/entity'
 import { CollectionEntity as CE } from '../../model'
-import { handleCollectionCreate } from '../erc721/create'
+// import { handleCollectionCreate } from '../erc721/create'
 import { findByIdListAsMap } from './entity'
 import { Context, EnMap } from './types'
 
 export async function finalizeCollections(collectionSet: Set<string>, ctx: Context): Promise<EnMap<CE>> {
   // ctx.store.findBy(CE, {id: In([...collectionMap.keys()])})
   const knownCollections = await findByIdListAsMap(ctx.store, CE, collectionSet)
-  const newCollections: CE[] = []
+  // const newCollections: CE[] = []
 
-  for (const id of collectionSet) {
-    const knownCollection = knownCollections.has(id)
-    if (!knownCollection) {
+  // for (const id of collectionSet) {
+  //   const knownCollection = knownCollections.has(id)
+  //   if (!knownCollection) {
     
-      const entity = create(CE, id, {})
-      const collection = handleCollectionCreate(entity, ctx)
+  //     const entity = create(CE, id, {})
+  //     const collection = handleCollectionCreate(entity, ctx)
       
-      newCollections.push(collection)
-      knownCollections.set(id, collection)
-    }
-  }
+  //     newCollections.push(collection)
+  //     knownCollections.set(id, collection)
+  //   }
+  // }
 
-  await ctx.store.save(newCollections)
+  // await ctx.store.save(newCollections)
   return knownCollections
 }
