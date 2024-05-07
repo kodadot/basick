@@ -24,22 +24,22 @@ export function handler(log: Log, block: BlockData) {
     case REGISTRY.COLLECTION_REGISTERED: {
       const decoded = proc.getCreateCollectionEvent(log)
       debug(Interaction.CREATE, decoded, true)
-      return null
+      return decoded
     }
     case REGISTRY.TOKEN_REGISTERED: {
       const decoded = proc.getCreateTokenEvent(log)
       debug(Interaction.MINT, decoded, true)
-      return null
+      return decoded
     }
     case REGISTRY.TOKEN_LIST_REGISTERED: {
       const decoded = proc.getCreateTokenListEvent(log)
       debug(Interaction.MINT, decoded, true)
-      return null
+      return decoded
     }
     case REGISTRY.MINT_INFO_UPDATED: {
       const decoded = events.TokenListRegistered.decode(log)
       debug('MINT_INFO_UPDATED' as any, decoded, true)
-      return null
+      return decoded
     }
     default:
       warn('REGISTRY' as any, 'no such handler')
