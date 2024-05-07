@@ -7,10 +7,8 @@ import {
     Transaction as _Transaction,
 } from '@subsquid/evm-processor'
 import { Store } from '@subsquid/typeorm-store'
-import * as erc721 from './abi/ERC721'
-import * as registry from './abi/Registry'
+import { events as registry } from './abi/Registry'
 import { ENV_CONTRACTS, STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
-import { Contracts, contractList } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
@@ -46,7 +44,7 @@ export const processor = new EvmBatchProcessor()
     })
     .addLog({
         address: [ENV_CONTRACTS.REGISTRY],
-        topic0: [registry.events.CollectionRegistered.topic],
+        topic0: [registry.CollectionRegistered.topic],
         // transaction: true
     })
     // .addLog({
@@ -90,7 +88,7 @@ export const processor = new EvmBatchProcessor()
 
 
 export type Fields = EvmBatchProcessorFields<typeof processor>
-export type Context = DataHandlerContext<Store, Fields>
+export type Process = DataHandlerContext<Store, Fields>
 export type Block = BlockHeader<Fields>
 export type Log = _Log<Fields>
 export type Transaction = _Transaction<Fields>
