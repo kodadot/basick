@@ -17,22 +17,21 @@ import { debug } from './utils/logger'
 import { finalizeCollections } from './utils/lookups'
 import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
+import { handleCollectionAdd } from './registry/add'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
   const items = []
-  const registered = []
 
   for (const block of ctx.blocks) {
     for (const log of block.logs) {
-      const item = unwrapLog(log, block)
-      if (item) {
-        if (item.interaction === Interaction.CREATE) {
-          registered.push(item)
-        } else {
-          items.push(item)
-        }
-        
+      if (log.address === ENV_CONTRACTS.REGISTRY && mainTopic(log) === REGISTRY.COLLECTION_REGISTERED) {
+        await handleCollectionAdd(log, ctx)
+      } else {
+        const item = unwrapLog(log, block)
+        if (item) {
+            items.push(item)
+          }
       }
     }
   }
@@ -53,9 +52,9 @@ export async function mainFrame(ctx: Context): Promise<void> {
 }
 
 function unwrapLog(log: Log, block: BlockData) {
-  if (log.address === ENV_CONTRACTS.REGISTRY) {
-    return handleRegistry(log, block)
-  }
+  // if (log.address === ENV_CONTRACTS.REGISTRY) {
+  //   return handleRegistry(log, block)
+  // }
 
   if (mainTopic(log) == ERC721_TRANSFER) {
     return handle721Token(log, block)
