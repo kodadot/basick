@@ -27,7 +27,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.issuer = event.caller
   final.max = undefined
   final.metadata = event.info.contractURI
-  // final.baseURI = event.info.baseURI
+  final.baseUri = event.info.baseURI
   final.nftCount = 0
   final.ownerCount = 0
   final.supply = 0
