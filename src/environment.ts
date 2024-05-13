@@ -32,7 +32,7 @@ const NODE_URL = nodes[CHAIN]
 
 
 export const isProd = CHAIN.endsWith('mainnet')
-export const disabledRPC = process.env.DISABLED_RPC === 'true' || !isProd
+export const disabledRPC = process.env.DISABLED_RPC === 'true' ?? !isProd
 
 console.table({ CHAIN, ARCHIVE_URL, NODE_URL, STARTING_BLOCK, disabledRPC, environment: isProd ? 'production' : 'development'})
 
