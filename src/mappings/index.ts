@@ -2,22 +2,20 @@ import { create } from '@kodadot1/metasquid/entity'
 import { logger } from '@kodadot1/metasquid/logger'
 import { Optional } from '@kodadot1/metasquid/types'
 import * as erc721 from '../abi/ERC721'
-import * as registry from '../abi/Registry'
 import { Multicall } from '../abi/multicall'
 import { ENV_CONTRACTS } from '../environment'
 import { CollectionEntity as CE, Interaction, MetadataEntity, NFTEntity as NE } from '../model'
 import { Contracts } from '../processable'
-import { handler as handle721Token, ERC721_TRANSFER } from './erc721'
-import { handler as handleRegistry, REGISTRY } from './registry'
+import { ERC721_TRANSFER, handler as handle721Token } from './erc721'
+import { REGISTRY } from './registry'
+import { handleCollectionAdd } from './registry/add'
 import { handleMetadata } from './shared/metadata'
 import { BASE_URI_MAP, MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
 import { findByIdListAsMap } from './utils/entity'
 import { lastBatchBlock, mainTopic } from './utils/evm'
-import { debug } from './utils/logger'
 import { finalizeCollections } from './utils/lookups'
 import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
-import { handleCollectionAdd } from './registry/add'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
@@ -81,7 +79,7 @@ export async function whatToDoWithTokens(
 
   for (const item of items) {
     if (!collections.has(item.contract)) {
-      logger.debug(`${item.contract} NOT FOUND --> SKIP event ${item.interaction} on ${item.id}`)
+      // logger.debug(`${item.contract} NOT FOUND --> SKIP event ${item.interaction} on ${item.id}`)
       continue
     }
 
