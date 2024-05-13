@@ -1,16 +1,17 @@
-import path from 'path'
-import https from 'https'
-import axios from 'axios'
+// import path from 'path'
+// import https from 'https'
+// import axios from 'axios'
+// import { $obtain } from '@kodadot1/minipfs'
 
 import { Attribute } from './model'
-import { Context } from './processor'
-import { asyncSleep, splitIntoBatches } from './util'
-import { TokenEntity as Token } from './model'
-import { In } from 'typeorm'
+// import { Process } from './processor'
+// import { asyncSleep, splitIntoBatches } from './util'
+// import { TokenEntity as Token } from './model'
+// import { In } from 'typeorm'
 
-const MAX_REQ_SEC = 10
+// const MAX_REQ_SEC = 10
 
-export const IPFS_GATEWAY = 'https://ipfs.io/ipfs/'
+// export const IPFS_GATEWAY = 'https://ipfs.io/ipfs/'
 
 export interface TokenMetadata {
     image: string
