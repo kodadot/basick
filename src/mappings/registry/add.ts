@@ -2,7 +2,7 @@ import { getOrCreate } from '@kodadot1/metasquid/entity'
 import md5 from 'md5'
 import { CollectionEntity as CE, CollectionType } from '../../model'
 import { handleMetadata } from '../shared/metadata'
-import { unwrap } from '../utils/extract'
+import { contractOf, unwrap } from '../utils/extract'
 import { debug, pending, success } from '../utils/logger'
 import { Action, Context, Log } from '../utils/types'
 import { getCreateCollectionEvent } from './getters'
@@ -23,7 +23,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.floor = BigInt(0)
   final.hash = md5(event.collection)
   final.highestSale = BigInt(0)
-  final.id = event.collection
+  final.id = contractOf(event.collection)
   final.issuer = event.caller
   final.max = undefined
   final.metadata = event.info.contractURI
