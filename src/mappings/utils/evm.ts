@@ -1,6 +1,7 @@
 import { BlockHeader } from '@subsquid/evm-processor'
 import { Context, Log } from './types'
 import { EventRecord, LogEvent } from '../../abi/abi.support'
+import { Optional } from '@kodadot1/metasquid/types'
 
 
 export function topicOf<T>(ctx: LogEvent<T>): string {
@@ -17,4 +18,19 @@ export function mainTopic(ctx: Log): string {
 
 export function lastBatchBlock(ctx: Context): BlockHeader {
   return ctx.blocks[ctx.blocks.length - 1].header
+}
+
+export function tokenUri(baseUri: Optional<string>, tokenId: Optional<string>): string {
+  if (!baseUri || !tokenId) {
+    return ''
+  }
+  const uri = baseUri.endsWith('/') ? baseUri : `${baseUri}/`
+  return `${uri}${tokenId}`
+}
+
+export function tokenName(baseName: Optional<string>, tokenId: Optional<string>): string {
+  if (!baseName || !tokenId) {
+    return ''
+  }
+  return `${baseName} #${tokenId}`
 }

@@ -45,10 +45,10 @@ export async function mainFrame(ctx: Context): Promise<void> {
   const { contracts, tokens } = uniqueEntitySets(items)
   const collections = await finalizeCollections(contracts, ctx)
   const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
-  const complete = await completeTokens(ctx, finish)
+  // const complete = await enrichTokenMapWithMetadata(ctx, finish)
 
 
-  logger.info(`Batch completed, ${complete.length} tokens saved`)
+  logger.info(`Batch completed, ${finish.size} tokens saved`)
 }
 
 function unwrapLog(log: Log, block: BlockData) {
@@ -77,10 +77,11 @@ export async function whatToDoWithTokens(
   // ctx.store.findBy(CE, {id: In([...collectionMap.keys()])})
   const knownTokens = await findByIdListAsMap(ctx.store, NE, tokens)
   const events: EventEntity[] = []
+  const metadataEntities: MetadataEntity[] = []
 
   for (const item of items) {
-    if (collections.has(item.contract)) {
-      logger.debug(`Skipping ${item.contract}-related event ${item.interaction} on ${item.id}`)
+    if (!collections.has(item.contract)) {
+      logger.debug(`${item.contract} NOT FOUND --> SKIP event ${item.interaction} on ${item.id}`)
       continue
     }
 
@@ -95,6 +96,18 @@ export async function whatToDoWithTokens(
       knownToken = item.applyTo(knownToken)
     }
 
+    if (item.interaction === Interaction.MINT && knownToken.metadata) {
+      const metadata = await handleMetadata(knownToken.metadata, ctx.store)
+      if (metadata) {
+        knownToken.meta = metadata
+        knownToken.name = metadata?.name
+        knownToken.image = metadata?.image
+        knownToken.media = metadata?.animationUrl
+
+        metadataEntities.push(metadata)
+      }  
+    }
+
     events.push(item.event)
     knownTokens.set(item.id, knownToken)
   }
@@ -104,18 +117,53 @@ export async function whatToDoWithTokens(
   await ctx.store.upsert(values)
   await ctx.store.save(events)
 
+  if (metadataEntities.length > 0) {
+    await ctx.store.save(metadataEntities)
+  }
+
   return knownTokens
 }
 
+async function _enrichTokenMapWithMetadata(ctx: Context, tokenMap: EnMap<NE>) {
+  const metadataFutures: Promise<Optional<MetadataEntity>>[] = []
+  const final: NE[] = []
+
+  for (const token of tokenMap.values()) {
+    if (token.metadata) {
+      const getMeta = handleMetadata(token.metadata, ctx.store).then(m => {
+        if (m) {
+          token.meta = m
+          token.name = m.name
+          token.image = m.image
+          token.media = m.animationUrl
+        }
+
+        return m
+      })
+      metadataFutures.push(getMeta)
+      final.push(token)
+    }
+  }
+
+  const metaList = await Promise.all(metadataFutures)
+  const filtered = metaList.filter(m => m) as MetadataEntity[]
+
+  logger.debug(`Saving ${filtered.length} metadata`)
+  await ctx.store.save(filtered)
+
+  await ctx.store.save(final)
+  return final
+}
+
 // TODO: do only if event was mint.
-async function completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
+async function _completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
   const collections = groupedItemsByCollection(tokenMap.keys())
   const final: NE[] = []
   const metadataFutures: Promise<Optional<MetadataEntity>>[] = []
 
   for (const [contract, ids] of collections.entries()) {
     const list = Array.from(ids)
-    const tokens = await baseUriMetadataFetch(ctx, contract, list)
+    const tokens = await _multicallMetadataFetch(ctx, contract, list)
     for (const [i, id] of list.entries()) {
       const realId = createTokenId(contract, id)
       const token = tokenMap.get(realId)!
@@ -160,7 +208,7 @@ async function _multicallMetadataFetch(ctx: Context, collection: string, tokens:
   return metadata
 }
 
-async function baseUriMetadataFetch(_ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
+async function _baseUriMetadataFetch(_ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
   const baseUri = BASE_URI_MAP[collection as Contracts]
   if (!baseUri) {
     console.error(`No base URI for ${collection}`)
