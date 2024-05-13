@@ -13,8 +13,11 @@ export function toBaseEvent(context: Context): BaseCall {
   return { caller, blockNumber, timestamp };
 }
 
-export function contractOf(event: Context): string {
-  return event.address
+export function contractOf(event: string): string
+export function contractOf(event: Context): string
+export function contractOf(event: Context | string): string {
+  const value = typeof event === 'string' ? event : event.address;
+  return value.toLowerCase();
 }
 
 
