@@ -1,6 +1,7 @@
 import { EMPTY_ADDRESS } from '../utils/constants'
 import { Log } from '../utils/types'
-import * as erc721 from '../../abi/ERC721'
+import {events as erc721 } from '../../abi/ERC721'
+import { debug } from '../utils/logger'
 
 export function isMint(transfer: Transfer) {
   return transfer.from === EMPTY_ADDRESS && transfer.to !== EMPTY_ADDRESS
@@ -15,16 +16,13 @@ export function isTransfer(transfer: Transfer) {
 }
 
 export function decode721Transfer(ctx: Log) {
-  return erc721.events.Transfer.decode(ctx)
+  return erc721.Transfer.decode(ctx)
 }
 
 export function safeDecode721Transfer(ctx: Log) {
-  try {
-    return decode721Transfer(ctx)
-  } catch (e) {
-    console.error('failed to decode 721 transfer', e)
-    return null
-  }
+  const isTransfer = erc721.Transfer.is(ctx)
+  const hasEnoughTopics = ctx.topics.length === 4
+  return isTransfer && hasEnoughTopics ? decode721Transfer(ctx) : null
 }
 
 export function getTransferType(transfer: Transfer) {
