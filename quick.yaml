@@ -1,5 +1,5 @@
 manifestVersion: subsquid.io/v0.1
-name: shack
+name: quick
 version: 4
 description: 'SubSquid indexer for Base (Sepolia)'
 build:
