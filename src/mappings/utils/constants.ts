@@ -1,10 +1,11 @@
 import { Contracts } from "../../processable"
 
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const KODA_MINTER_ADDRESS = '0xe844b2a0a6453250c920bd2b4b7741946ab16c08';
 
 // https://explorer.zksync.io/address/0xF9cda624FBC7e059355ce98a31693d299FACd963#contract
 // https://www.multicall3.com/deployments
-export const MULTICALL_ADDRESS = '0xF9cda624FBC7e059355ce98a31693d299FACd963'
+export const MULTICALL_ADDRESS = '0xca11bde05977b3631167028862be2a173976ca11'
 export const MULTICALL_BATCH_SIZE = 100
 
 export const BASE_URI_MAP: Record<Partial<Contracts>, string> = {
