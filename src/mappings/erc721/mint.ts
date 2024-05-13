@@ -5,6 +5,7 @@ import { createEvent } from '../shared/event'
 import { contractOf, toBaseEvent } from '../utils/extract'
 import { Action, ItemStateUpdate, Log, createTokenId, eventFrom } from '../utils/types'
 import { Transfer } from './utils'
+import { tokenName, tokenUri } from '../utils/evm'
 
 const OPERATION = Action.MINT
 
@@ -39,6 +40,8 @@ export function handleTokenCreate({ to, tokenId }: Transfer, context: Log): Item
         ...this.state,
         collection,
         issuer: collection.issuer,
+        name: tokenName(collection.name, this.state.sn),
+        metadata: tokenUri(collection.baseUri, this.state.sn)
       }
 
       return collection
