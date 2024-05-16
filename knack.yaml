@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: knack
-version: 4
+version: 1
 description: 'SubSquid indexer for Base (Sepolia)'
 build:
 deploy:
@@ -15,6 +15,9 @@ deploy:
       - lib/main
     env:
       CHAIN: base-sepolia
+      STARTING_BLOCK: 9358752
+      DISABLED_RPC: false
+      CONTRACT_REGISTRY: '0x672c524543454a5ffb0840131158a26296b0426c'
   api:
     cmd:
       - npx
