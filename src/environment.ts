@@ -1,12 +1,12 @@
 import { lookupArchive } from '@subsquid/archive-registry'
 
 export type Chain = 'zksync' | 'immutable-zkevm' | 'base'
-export type ChainEnv = 'mainnet' 
+export type ChainEnv = 'mainnet'
 // | 'testnet' 
 type ChainWithEnv = `${Chain}-${ChainEnv}`
 type PossibleChain = ChainWithEnv | `${Chain}-${string}`
 
-export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv  || 'immutable-zkevm-mainnet'
+export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv || 'immutable-zkevm-mainnet'
 
 export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 export const FINALITY_CONFIRMATION = Number(process.env.FINALITY_CONFIRMATION || 75)
@@ -35,7 +35,12 @@ const NODE_URL = nodes[CHAIN]
 export const isProd = CHAIN.endsWith('mainnet')
 export const disabledRPC = process.env.DISABLED_RPC === 'true' ?? !isProd
 
-console.table({ CHAIN, ARCHIVE_URL, NODE_URL, STARTING_BLOCK, disabledRPC, environment: isProd ? 'production' : 'development'})
+console.table({
+    CHAIN, ARCHIVE_URL, NODE_URL, STARTING_BLOCK,
+    REGISTRY: ENV_CONTRACTS.REGISTRY,
+    disabledRPC,
+    environment: isProd ? 'production' : 'development',
+})
 
 export const getArchiveUrl = (): string => ARCHIVE_URL
 export const getNodeUrl = (): string => NODE_URL
