@@ -90,3 +90,6 @@ erc TAG:
 
 archive-registry:
 	npx squid-archive-registry -t evm
+
+fmt:
+	deno fmt --no-semicolons --single-quote src/mappings src/*.ts
