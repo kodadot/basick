@@ -7,7 +7,8 @@ import { Context, EnMap } from './types'
 export async function finalizeCollections(collectionSet: Set<string>, ctx: Context): Promise<EnMap<CE>> {
   // ctx.store.findBy(CE, {id: In([...collectionMap.keys()])})
   const knownCollections = await findByIdListAsMap(ctx.store, CE, collectionSet)
-  debug('finalizeCollections' as any , { knownCollections: knownCollections.size })
+  // debug('finalizeCollections' as any , { knownCollections: knownCollections.size })
+  ctx.log.info(`[finalizeCollections] ${knownCollections.size} collections found`)
   // const newCollections: CE[] = []
 
   // for (const id of collectionSet) {
