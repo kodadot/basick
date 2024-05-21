@@ -25,12 +25,13 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.highestSale = BigInt(0)
   final.id = contractOf(event.collection)
   final.issuer = event.caller
-  final.max = undefined
+  final.max = Number(event.info.maxSupply) ?? undefined
   final.metadata = event.info.contractURI
   final.baseUri = event.info.baseURI
   final.nftCount = 0
   final.ownerCount = 0
   final.supply = 0
+  final.symbol = event.info.symbol
   final.updatedAt = event.timestamp
   final.volume = BigInt(0)
   final.version =  721 //CollectionType.ERC721
