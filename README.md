@@ -116,3 +116,18 @@ pbpaste | tr '[:upper:]' '[:lower:]'
 > instance of `EvmBatchProcessor` is defined in `src/processor.ts`. 
 > [`EvmBatchProcessor` overview](https://docs.subsquid.io/develop-a-squid/evm-processor/) 
 > check the and the [configuration page](https://docs.subsquid.io/develop-a-squid/evm-processor/configuration/)
+
+4. Setting up `.env` for particular network
+
+You always have defined correct variables in the Squid config `<squid_name>.yaml` under `processor.env`.
+Copy them to `.env` file in the root of the project.
+
+> [!TIP]
+> Example of `.env` file for `base-mainnet` network
+
+```bash
+SQD_DEBUG=squid:log
+CHAIN=base-mainnet
+STARTING_BLOCK=14717520
+CONTRACT_REGISTRY=0xcacfe59736172a192c2518f0f83b825b984cc399
+```
