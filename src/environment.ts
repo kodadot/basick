@@ -10,6 +10,7 @@ export const CHAIN: PossibleChain = process.env.CHAIN as ChainWithEnv || 'base-m
 
 export const STARTING_BLOCK = Number(process.env.STARTING_BLOCK || 0)
 export const FINALITY_CONFIRMATION = Number(process.env.FINALITY_CONFIRMATION || 75)
+export const PREINDEX_BLOCK = Number(process.env.PREINDEX_BLOCK || 0)
 
 export const ENV_CONTRACTS = {
     REGISTRY: process.env.CONTRACT_REGISTRY || '0x672c524543454a5ffb0840131158a26296b0426c'

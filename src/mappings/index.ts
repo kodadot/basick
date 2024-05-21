@@ -3,12 +3,12 @@ import { logger } from '@kodadot1/metasquid/logger'
 import { Optional } from '@kodadot1/metasquid/types'
 import * as erc721 from '../abi/ERC721'
 import { Multicall } from '../abi/multicall'
-import { ENV_CONTRACTS } from '../environment'
+import { ENV_CONTRACTS, PREINDEX_BLOCK } from '../environment'
 import { CollectionEntity as CE, Interaction, MetadataEntity, NFTEntity as NE } from '../model'
-import { Contracts } from '../processable'
+import { Contracts, contractList } from '../processable'
 import { ERC721_TRANSFER, handler as handle721Token } from './erc721'
 import { REGISTRY } from './registry'
-import { handleCollectionAdd } from './registry/add'
+import { forceCollectionCreate, handleCollectionAdd } from './registry/add'
 import { handleMetadata } from './shared/metadata'
 import { BASE_URI_MAP, MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/constants'
 import { findByIdListAsMap } from './utils/entity'
@@ -19,6 +19,13 @@ import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
+
+  if (ctx.blocks[0].header.height === PREINDEX_BLOCK) {
+    const cached = contractList.map(forceCollectionCreate).filter(Boolean) as CE[]
+    await ctx.store.save(cached)
+    console.log(`Cached ${cached.length} collections`)
+  }
+
   const items = []
 
   for (const block of ctx.blocks) {

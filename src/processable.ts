@@ -122,6 +122,6 @@ function toMap(
     ownerCount: 0,
     supply: max,
     volume: BigInt(0),
-    version: 1
+    version: 721,
   };
 }
