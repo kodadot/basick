@@ -24,7 +24,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.hash = md5(event.collection)
   final.highestSale = BigInt(0)
   final.id = contractOf(event.collection)
-  final.issuer = event.caller
+  final.issuer = event.caller || event.creator
   final.max = Number(event.info.maxSupply) ?? undefined
   final.metadata = event.info.contractURI
   final.baseUri = event.info.baseURI
