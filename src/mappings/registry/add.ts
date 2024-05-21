@@ -1,4 +1,4 @@
-import { getOrCreate } from '@kodadot1/metasquid/entity'
+import { create, getOrCreate } from '@kodadot1/metasquid/entity'
 import md5 from 'md5'
 import { CollectionEntity as CE, CollectionType } from '../../model'
 import { handleMetadata } from '../shared/metadata'
@@ -6,6 +6,8 @@ import { contractOf, unwrap } from '../utils/extract'
 import { debug, pending, success } from '../utils/logger'
 import { Action, Context, Log } from '../utils/types'
 import { getCreateCollectionEvent } from './getters'
+import { Contracts, ContractsMap } from '../../processable'
+import { BASE_URI_MAP } from '../utils/constants'
 
 
 const OPERATION = Action.CREATE
@@ -49,4 +51,16 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
 
   await process.store.save(final)
   success(OPERATION, `[COLLECTION] ${final.id}`)
+}
+
+
+export function forceCollectionCreate(collection: string): CE | undefined {
+  const cache =  ContractsMap[collection as Contracts];
+  const baseUri = BASE_URI_MAP[collection as Contracts]
+
+  if (cache) {
+    return create(CE, collection, {...cache, hash: md5(collection), baseUri })
+  }
+
+  return undefined
 }
