@@ -3,6 +3,9 @@ import { handleTokenBurn } from './burn'
 import { handleTokenCreate } from './mint'
 import { handleTokenTransfer } from './transfer'
 import { safeDecode721Transfer, isBurn, isMint } from './utils'
+import { events } from '../../abi/ERC721'
+
+export const ERC721_TRANSFER = events.Transfer.topic
 
 export function handler(log: Log, block: BlockData) {
   const transfer = safeDecode721Transfer(log)

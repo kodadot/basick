@@ -1,4 +1,5 @@
 
+import { Optional } from '@kodadot1/metasquid/types'
 import { BaseCall, CallWith, Log as Context, UnwrapFunc } from './types'
 
 type Key<T> = keyof T
@@ -12,8 +13,15 @@ export function toBaseEvent(context: Context): BaseCall {
   return { caller, blockNumber, timestamp };
 }
 
-export function contractOf(event: Context): string {
-  return event.address
+export function contractOf(event: string): string
+export function contractOf(event: Context): string
+export function contractOf(event: Context | string): string {
+  const value = typeof event === 'string' ? event : event.address;
+  return value.toLowerCase();
+}
+
+export function addressOf(event: string): string {
+  return contractOf(event);
 }
 
 
@@ -21,6 +29,16 @@ export function unwrap<T>(ctx: Context, unwrapFn: UnwrapFunc<T>): CallWith<T> {
   const baseCall = toBaseEvent(ctx);
   const unwrapped = unwrapFn(ctx);
   return { ...baseCall, ...unwrapped };
+}
+
+
+export function safeUnwrap<T>(ctx: Context, unwrapFn: UnwrapFunc<T>): Optional<T>  {
+  try {
+    return unwrapFn(ctx)
+  } catch (e) {
+    console.error('[UTILS::SafeUnwrap]', unwrapFn.name, 'failed because', e )
+    return null;
+  }
 }
 
 export function assign<T extends {}>(item: T, state: Partial<T>): void {

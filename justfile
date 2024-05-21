@@ -73,7 +73,7 @@ brutal TAG=default:
 	npx sqd deploy -r -m {{TAG}}.yaml .
 
 update-deps:
-	npx npm-check-updates -ux
+	npx npm-check-updates -u
 
 exec:
 	docker exec -it synck-db-1 psql -U postgres -d squid
@@ -91,3 +91,5 @@ erc TAG:
 archive-registry:
 	npx squid-archive-registry -t evm
 
+fmt:
+	deno fmt --no-semicolons --single-quote src/mappings src/*.ts
