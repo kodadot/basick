@@ -76,6 +76,9 @@ export class CollectionEntity {
     @StringColumn_({nullable: true})
     baseUri!: string | undefined | null
 
+    @StringColumn_({nullable: true})
+    symbol!: string | undefined | null
+
     @Column_("varchar", {length: 7, nullable: false})
     type!: CollectionType
 

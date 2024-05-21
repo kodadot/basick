@@ -20,7 +20,7 @@ type CollectionEntity @entity {
   ownerCount: Int! # dummy
   supply: Int! # dummy
   baseUri: String
-  # symbol: String # dummy
+  symbol: String # dummy
   type: CollectionType!
   updatedAt: DateTime!
   version: Int! # dummy
