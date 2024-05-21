@@ -26,34 +26,76 @@ import { CollectionEntity, CollectionType } from "./model";
 
 // https://docs.subsquid.io/sdk/resources/evm/proxy-contracts/
 export enum Contracts {
-  Conjunto = "0x25194dfc7981d8a13367fe19b5b1c5fc010d535f",
-  Bloquinhos = "0x3c93690bbe585475fdfadab3f59b4604008c7ac4",
-  Memories = "0x3c549c45588fb42a94ca7b84081df43d95952c01"
+  Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373",
+  Higher = "0x0b6504d95f9d550d274468fb6de5d13b7e64aa6a",
+  Unfoldings = "0xc029b380f8a451cfd9e5124fa9fcad4397b8c119",
+  Basescapes = "0xd9a2c93ba2e9fae10fe762a42ee807bbf95764cc",
+  Concordante = "0x2cc76e51c4ae3ed7b0dcada34c1ea4fe059d5881",
+  Etchings = "0x439dfafd1d07c03f8ce332af17c2d80772d63ecb", 
+  Pixels = "0xc815823d86715fc9355c79252711f61087b39b39",
+  Estrutura = "0xbbf5c72ac002f4f6e074c7ad47fd278deb5c740e"
 }
 
 export const ContractsMap: Record<Contracts, any> = {
-  [Contracts.Conjunto]: toMap(
-    "Conjunto",
-    "CNJT",
-    50,
-    "0x22D02786f813A70c5699621810D0ea85efA07332",
-    "https://arweave.net/btZcKjV2qZ5OGxQm02h6rCcK1MY6bV6JYKV30Vr1ipM",
+  [Contracts.Basescapes]: toMap(
+    "Basescapes",
+    "Basescapes",
+    32,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreicljf6qmoula5u3l4jgrdilias6ucd54cecp7nw4iq2zeoesfee3e",
   ),
-  [Contracts.Bloquinhos]: toMap(
-    "Bloquinhos",
-    "CNTRCT",
-    120,
-    "0x22D02786f813A70c5699621810D0ea85efA07332",
-    "https://arweave.net/brcg0wOzdEIjwBswDdt2nTjsl0-8FJNtQaiKCwaOMqQ ",
+  [Contracts.Concordante]: toMap(
+    "Concordante",
+    "Concordante",
+    32,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreihrimjuyxj7wccnkwgqa2f2n5snyfvp2wdhd5xjokhnqsvs2duxy4",
   ),
-  [Contracts.Memories]: toMap(
-    "Memories",
-    "MS",
-    35,
-    "0x35dFa1Dbb4b8e82E8a924C53E3649112E45a05F4",
-    "https://arweave.net/UIV7b488550HzoAdpwRO7laTUDq9VPOD0YEP8sQfkaU",
+  [Contracts.Etchings]: toMap(
+    "Etchings",
+    "Etchings",
+    32,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreig4jgda4bc5pmxft2je34xrtsf5h3r6mvgkospgef6bp2f2qajqye",
+  ),
+  [Contracts.Pixels]: toMap(
+    "Pixels",
+    "Pixels",
+    32,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreibgyne6c5rebhhm2pmodreqddoqlnctpwds7a2q44fnx64wwih4nq",
+  ),
+  [Contracts.Estrutura]: toMap(
+    "ESTRUTURA",
+    "ESTRUTURA",
+    32,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreibhgpovdknmpmzyljmqmzbhqcqnnqselzdvp52i6j4eqwdka6w6me",
+  ),
+  [Contracts.Vortices]: toMap(
+    "Vortices",
+    "VTX",
+    128,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreicthpidyo3gznp3uuezvweiur7xcbo5qcwgw3x4teui2psoqxxbgq",
+  ),
+  [Contracts.Higher]: toMap(
+    "Higher",
+    "↑",
+    256,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreickjpqtqulirvugyqupeogbvum2uqsrp5focif5427fd2fzgywo4u",
+  ),
+  [Contracts.Unfoldings]: toMap(
+    "Unfoldings",
+    "UNFLD",
+    128,
+    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
+    "ipfs://bafkreib5pt53graj4wexhpgj3qrl37m3bsgjf3hz5muogqccdtutaq2huq",
   ),
 };
+
+export const contractList: string[] = Object.keys(ContractsMap);
 
 function toMap(
   name: string,

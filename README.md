@@ -1,19 +1,22 @@
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/subsquid/squid-evm-template)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/kodadot/basick)
 
-# Minimal EVM squid
+# Basick
 
-This is a starter template of a squid indexer for EVM networks (Ethereum, Polygon, BSC, etc.). See [Squid SDK docs](https://docs.subsquid.io/) for a complete reference.
-
-To extract EVM logs and transactions by a topic or a contract address, use `EvmBatchProcessor.addLog()` and `EvmBatchProcessor.addTransaction()` methods of the `EvmBatchProcessor` instance defined in `src/processor.ts`. 
-
-The requested data is transformed in batches by a single handler provided to the `processor.run()` method. 
-
-For a full list of supported networks and config options,
-check the [`EvmBatchProcessor` overview](https://docs.subsquid.io/develop-a-squid/evm-processor/) and the [configuration page](https://docs.subsquid.io/develop-a-squid/evm-processor/configuration/).
-
-For a step-by-step migration guide from TheGraph, see [the dedicated docs page](https://docs.subsquid.io/migrate/migrate-subgraph/).
+Basick is a squid indexer for Generative art utilized by [@kodadot](https://github.com/kodadot).
 
 Dependencies: Node.js, Docker.
+
+## Contract deployments
+
+> [!TIP]
+> The following table lists the deployed contracts on the respective networks.
+> Make sure that contract addresses are always lowercased,
+
+|          | BASE                                       | BASE-DEV                                   |
+|----------|--------------------------------------------|--------------------------------------------|
+| REGISTRY | 0xcacfe59736172a192c2518f0f83b825b984cc399 | 0x672c524543454a5ffb0840131158a26296b0426c |
+|          |                                            |                                            |
+|          |                                            |                                            |
 
 ## Quickstart
 
@@ -104,3 +107,27 @@ pbpaste | tr '[:upper:]' '[:lower:]'
 ```
 
 2. [Indexing proxy contracts](https://docs.subsquid.io/sdk/resources/evm/proxy-contracts/)
+
+3. Extracting new event / transaction
+ - use `EvmBatchProcessor.addLog()` for events
+ - use `EvmBatchProcessor.addTransaction()` for transactions
+
+> [!NOTE]
+> instance of `EvmBatchProcessor` is defined in `src/processor.ts`. 
+> [`EvmBatchProcessor` overview](https://docs.subsquid.io/develop-a-squid/evm-processor/) 
+> check the and the [configuration page](https://docs.subsquid.io/develop-a-squid/evm-processor/configuration/)
+
+4. Setting up `.env` for particular network
+
+You always have defined correct variables in the Squid config `<squid_name>.yaml` under `processor.env`.
+Copy them to `.env` file in the root of the project.
+
+> [!TIP]
+> Example of `.env` file for `base-mainnet` network
+
+```bash
+SQD_DEBUG=squid:log
+CHAIN=base-mainnet
+STARTING_BLOCK=14717520
+CONTRACT_REGISTRY=0xcacfe59736172a192c2518f0f83b825b984cc399
+```

@@ -1,8 +1,8 @@
 manifestVersion: subsquid.io/v0.1
-name: basick
-version: 5
-description: 'SubSquid indexer for Base'
-build: 
+name: knack
+version: 1
+description: 'SubSquid indexer for Base (Sepolia)'
+build:
 deploy:
   addons:
     postgres:
@@ -14,9 +14,10 @@ deploy:
       - node
       - lib/main
     env:
-      CHAIN: base-mainnet
-      STARTING_BLOCK: 14542021
-      CONTRACT_REGISTRY: '0xcacfe59736172a192c2518f0f83b825b984cc399'
+      CHAIN: base-sepolia
+      STARTING_BLOCK: 9358752
+      DISABLED_RPC: false
+      CONTRACT_REGISTRY: '0x672c524543454a5ffb0840131158a26296b0426c'
   api:
     cmd:
       - npx

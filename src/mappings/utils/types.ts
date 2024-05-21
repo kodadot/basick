@@ -1,11 +1,10 @@
 
-import { Block, Context, Fields, Log, Transaction } from '../../processor'
+import { Block, Process, Fields, Log, Transaction } from '../../processor'
 // export { Fields, Context, Block, Log, Transaction } from '../../processor'
 
 import { BaseBlock } from '@kodadot1/metasquid/types'
 import { BlockData } from '@subsquid/evm-processor'
 import { Interaction } from '../../model/generated/_interaction'
-import exp from 'constants'
 import { CollectionEntity, NFTEntity, Event as EventEntity } from '../../model'
 // import { CollectionEntity, NFTEntity } from '../../model'
 
@@ -17,7 +16,7 @@ export type BaseCall = {
 
 
 // export { Interaction }
-export { Block, Context, Fields, Log, Transaction, BlockData }
+export { Block, Process as Context, Fields, Log, Transaction, BlockData }
 
 export function eventFrom<T extends Interaction>(interaction: T, { blockNumber, caller, timestamp }: BaseCall, meta: string, currentOwner?: string): IEvent<T> {
   return {
@@ -68,6 +67,7 @@ export type CollectionUpdate = Partial<any>
 
 
 export type ItemStateUpdate = UpdateState<NFTEntity, CollectionEntity>
+export type CollectionStateUpdate = UpdateState<CollectionEntity, never>
 
 export type WithId = {
   id: string
@@ -82,6 +82,116 @@ export type BaseTokenEvent = CollectionId & {
 export type OptionalMeta = {
   metadata?: string
 }
+
+// struct CollectionInfo {
+//   string name;
+//   string symbol;
+//   string contractURI;
+//   string baseURI;
+//   uint256 maxSupply;
+//   address royaltyRecipient;
+//   uint256 royaltyPercentageBps;
+//   CollectionType collectionType;
+//   MintInfo mintInfo;
+// }
+
+// make this a type
+enum CollectionType {
+  ERC721,
+  ERC1155
+}
+
+enum MintType {
+  Public,
+  Issuer
+}
+
+// struct MintInfo {
+//   uint256 price;
+//   address token;
+//   bytes4 selector;
+//   MintType mintType;
+// }
+
+export type MintInfo = {
+  price: bigint
+  token: string
+  selector: string
+  mintType: MintType
+}
+
+export type CollectionInfo = {
+  name: string
+  symbol: string
+  contractURI: string
+  baseURI: string
+  maxSupply: bigint
+  royaltyRecipient: string
+  royaltyPercentageBps: bigint
+  collectionType: CollectionType
+  mintInfo: MintInfo
+}
+
+// event CollectionRegistered(
+//   address indexed collection, address indexed creator, address indexed owner, CollectionInfo info
+// );
+
+export type CollectionRegisteredEvent = {
+  collection: string
+  creator: string
+  owner: string
+  info: CollectionInfo
+}
+
+// event TokenRegistered(address indexed collection, uint256 indexed tokenId, address indexed owner, string tokenURI);
+
+export type TokenRegisteredEvent = {
+  collection: string
+  sn: string
+  owner: string
+  metadata: string
+}
+
+// event TokenListRegistered(
+//   address indexed collection, uint256[] indexed tokenIds, address[] indexed owners, string[] tokenURIs
+// );
+
+export type TokenListRegisteredEvent = {
+  collection: string
+  tokenIds: bigint[]
+  owners: string[]
+  tokenURIs: string[]
+}
+
+// event RoyaltySet(address indexed collection, address indexed recipient, uint256 indexed royaltyBps);
+
+export type RoyaltySetEvent = {
+  collection: string
+  recipient: string
+  royaltyBps: bigint
+}
+
+// event CollectionRemoved(address indexed collection);
+
+export type CollectionRemovedEvent = {
+  collection: string
+}
+
+// event MintInfoUpdated(address indexed collection, MintInfo mintInfo);
+
+export type MintInfoUpdatedEvent = {
+  collection: string
+  mintInfo: MintInfo
+}
+
+// event AttributeSet(address indexed collection, string indexed key, string indexed value);
+
+export type AttributeSetEvent = {
+  collection: string
+  key: string
+  value: string
+}
+
 
 export type CreateCollectionEvent = BaseCollectionEvent &
   OptionalMeta & {
@@ -155,8 +265,8 @@ export type WithCount = {
 // }
 
 export type WithHooks = {
-  before?: (ctx: Context) => void | Promise<void>
-  after?: (ctx: Context) => void | Promise<void>
+  before?: (ctx: Process) => void | Promise<void>
+  after?: (ctx: Process) => void | Promise<void>
 }
 
 export type EventExtra = WithBlock & WithCaller & WithContract
