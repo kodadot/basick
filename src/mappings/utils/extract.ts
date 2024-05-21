@@ -20,6 +20,10 @@ export function contractOf(event: Context | string): string {
   return value.toLowerCase();
 }
 
+export function addressOf(event: string): string {
+  return contractOf(event);
+}
+
 
 export function unwrap<T>(ctx: Context, unwrapFn: UnwrapFunc<T>): CallWith<T> {
   const baseCall = toBaseEvent(ctx);
