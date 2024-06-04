@@ -42,22 +42,25 @@ export const processor = new EvmBatchProcessor()
             topics: true,
             data: true,
             // transactionHash: true
-        }
+        },
+        // transaction: {
+        //     from: true,
+        // }
     })
     .addLog({
         address: [ENV_CONTRACTS.REGISTRY],
         topic0: [registry.CollectionRegistered.topic],
         range: {
             from: STARTING_BLOCK
-        }
-        // transaction: true
+        },
+        transaction: true
     })
     .addLog({
         topic0: [erc721.Transfer.topic],
         range: {
             from: STARTING_BLOCK
-        }
-        // transaction: true
+        },
+        transaction: true
     })
 
     if (PREINDEX_BLOCK) {
@@ -68,8 +71,8 @@ export const processor = new EvmBatchProcessor()
                 range: {
                     from: PREINDEX_BLOCK,
                     to: STARTING_BLOCK
-                }
-                // transaction: true
+                },
+                transaction: true
             })
         })
     }

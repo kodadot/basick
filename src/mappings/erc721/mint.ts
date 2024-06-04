@@ -29,7 +29,7 @@ export function handleTokenCreate({ to, tokenId }: Transfer, context: Log): Item
       version: 721
     },
     interaction: OPERATION,
-    event: createEvent(id, eventFrom(OPERATION, base, to)),
+    event: createEvent(id, eventFrom(OPERATION, base, '', to)),
     applyTo(item): NFTEntity {
       const final = create(NFTEntity, id, { ...item, ...this.state })
       this.event.nft = final
