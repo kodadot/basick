@@ -16,6 +16,7 @@ import { lastBatchBlock, mainTopic } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
 import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
+import { handleSingleTokenRegister } from './registry/mint'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
@@ -56,10 +57,10 @@ export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Batch completed, ${finish.size} tokens saved`)
 }
 
-function unwrapLog(log: Log, block: BlockData) {
-  // if (log.address === ENV_CONTRACTS.REGISTRY) {
-  //   return handleRegistry(log, block)
-  // }
+function unwrapLog(log: Log, block: BlockData): ItemStateUpdate | null {
+  if (log.address === ENV_CONTRACTS.REGISTRY && mainTopic(log) === REGISTRY.TOKEN_REGISTERED) {
+    return handleSingleTokenRegister(log, block)
+  }
 
   if (mainTopic(log) == ERC721_TRANSFER) {
     return handle721Token(log, block)
