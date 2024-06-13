@@ -56,6 +56,14 @@ export const processor = new EvmBatchProcessor()
         transaction: true
     })
     .addLog({
+        address: [ENV_CONTRACTS.REGISTRY],
+        topic0: [registry.TokenRegistered.topic],
+        range: {
+            from: STARTING_BLOCK
+        },
+        transaction: true
+    })
+    .addLog({
         topic0: [erc721.Transfer.topic],
         range: {
             from: STARTING_BLOCK
