@@ -50,11 +50,14 @@ export async function mainFrame(ctx: Context): Promise<void> {
 
   const { contracts, tokens } = uniqueEntitySets(items)
   const collections = await finalizeCollections(contracts, ctx)
-  const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
-  // const complete = await enrichTokenMapWithMetadata(ctx, finish)
+  
+  if (collections.size > 0) {
+    const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
+    logger.info(`Batch completed, ${finish.size} tokens saved`)
+  } else {
+    logger.info(`Batch empty`)
+  }
 
-
-  logger.info(`Batch completed, ${finish.size} tokens saved`)
 }
 
 function unwrapLog(log: Log, block: BlockData): ItemStateUpdate | null {
@@ -81,6 +84,7 @@ export async function whatToDoWithTokens(
   ctx: Context
 ) {
   // ctx.store.findBy(CE, {id: In([...collectionMap.keys()])})
+  console.log('whatToDoWithTokens', tokens.size)
   const knownTokens = await findByIdListAsMap(ctx.store, NE, tokens)
   const events: EventEntity[] = []
   const metadataEntities: MetadataEntity[] = []
