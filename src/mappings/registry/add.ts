@@ -19,6 +19,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
 
   final.blockNumber = BigInt(event.blockNumber)
   // final.burned = false
+  final.baseUri = event.info.baseURI
   final.createdAt = event.timestamp
   final.currentOwner = event.owner
   final.distribution = 0
@@ -29,7 +30,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.issuer = event.caller || event.creator
   final.max = Number(event.info.maxSupply) ?? undefined
   final.metadata = event.info.contractURI
-  final.baseUri = event.info.baseURI
+  final.name = event.info.name
   final.nftCount = 0
   final.ownerCount = 0
   final.supply = 0
