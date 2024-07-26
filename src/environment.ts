@@ -1,5 +1,3 @@
-import { lookupArchive } from '@subsquid/archive-registry'
-
 export type Chain = 'zksync' | 'immutable-zkevm' | 'base'
 export type ChainEnv = 'mainnet'
 // | 'testnet' 
@@ -29,7 +27,7 @@ const nodes: Record<PossibleChain, string> = {
 }
 
 // Setup
-const ARCHIVE_URL = lookupArchive(CHAIN)
+const ARCHIVE_URL = `https://v2.archive.subsquid.io/network/${CHAIN}`
 const NODE_URL = nodes[CHAIN]
 
 

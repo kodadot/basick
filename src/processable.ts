@@ -129,7 +129,7 @@ function toMap(
     highestSale: BigInt(0),
     nftCount: 0,
     ownerCount: 0,
-    supply: max,
+    supply: 0,
     volume: BigInt(0),
     version: 721,
   };
