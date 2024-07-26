@@ -44,6 +44,10 @@ export function handleTokenCreate({ to, tokenId }: Transfer, context: Log): Item
         metadata: tokenUri(collection.baseUri, this.state.sn)
       }
 
+      // update collection
+      collection.nftCount += 1;
+      collection.supply += 1;
+
       return collection
     }
   }

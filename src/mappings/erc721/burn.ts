@@ -25,6 +25,11 @@ export function handleTokenBurn({ tokenId }: Transfer, context: Log): ItemStateU
       const final = merge(item, this.state)
       this.event.nft = final
       return final
+    },
+    applyFrom(collection) {
+      // update collection
+      collection.supply -= 1
+      return collection
     }
   }
 

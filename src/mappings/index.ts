@@ -88,6 +88,7 @@ export async function whatToDoWithTokens(
   const knownTokens = await findByIdListAsMap(ctx.store, NE, tokens)
   const events: EventEntity[] = []
   const metadataEntities: MetadataEntity[] = []
+  const collectionsToSave: Set<string> = new Set()
 
   for (const item of items) {
     if (!collections.has(item.contract)) {
@@ -101,6 +102,7 @@ export async function whatToDoWithTokens(
     if (item.applyFrom) {
       const collection = collections.get(item.contract)!
       item.applyFrom(collection)
+      collectionsToSave.add(item.contract)
     }
     if (item.applyTo) {
       knownToken = item.applyTo(knownToken)
@@ -126,6 +128,11 @@ export async function whatToDoWithTokens(
 
   await ctx.store.upsert(values)
   await ctx.store.save(events)
+
+  if (collectionsToSave.size > 0) {
+    const toUpsert = [...collectionsToSave.values()].map(id => collections.get(id)!)
+    await ctx.store.save(toUpsert)
+  }
 
   if (metadataEntities.length > 0) {
     await ctx.store.save(metadataEntities)
