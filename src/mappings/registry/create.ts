@@ -36,7 +36,7 @@ export function handleCollectionCreate({ creator, owner, maxSupply, metadata, ve
       version
     },
     applyTo(collection): CollectionEntity {
-      const final = create(CollectionEntity, contract, { ...this.state, ...collection })
+      const final = create(CollectionEntity, contract, { ...collection, ...this.state })
       // this.event.collection = final
       return final
     }
