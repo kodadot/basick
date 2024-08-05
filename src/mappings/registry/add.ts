@@ -22,7 +22,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.baseUri = event.info.baseURI
   final.createdAt = event.timestamp
   final.currentOwner = event.owner
-  final.distribution = 0
+  final.distribution = final.distribution || 0
   final.floor = BigInt(0)
   final.hash = md5(event.collection)
   final.highestSale = BigInt(0)
@@ -31,12 +31,12 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.max = Number(event.info.maxSupply) ?? undefined
   final.metadata = event.info.contractURI
   final.name = event.info.name
-  final.nftCount = 0
-  final.ownerCount = 0
-  final.supply = 0
+  final.nftCount = final.nftCount || 0
+  final.ownerCount = final.ownerCount || 0
+  final.supply = final.supply || 0
   final.symbol = event.info.symbol
   final.updatedAt = event.timestamp
-  final.volume = BigInt(0)
+  final.volume = final.volume || BigInt(0)
   final.version =  721 //CollectionType.ERC721
   final.type = CollectionType.ERC721
 
