@@ -1,4 +1,4 @@
-export type Chain = 'zksync' | 'immutable-zkevm' | 'base'
+export type Chain = 'zksync' | 'immutable-zkevm' | 'base' | 'mantle'
 export type ChainEnv = 'mainnet'
 // | 'testnet' 
 type ChainWithEnv = `${Chain}-${ChainEnv}`
@@ -24,6 +24,7 @@ const nodes: Record<PossibleChain, string> = {
     'immutable-zkevm-testnet': 'https://rpc.testnet.immutable.com',
     'base-mainnet': 'https://mainnet.base.org',
     'base-sepolia': 'https://sepolia.base.org',
+    'mantle-mainnet': 'https://rpc.mantle.xyz',
 }
 
 // Setup
