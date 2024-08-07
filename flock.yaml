@@ -1,0 +1,40 @@
+manifestVersion: subsquid.io/v0.1
+name: flock
+version: 1
+description: 'SubSquid indexer for Mantle'
+build:
+deploy:
+  addons:
+    postgres:
+      config:
+        statement_timeout: 30000
+        log_min_duration_statement: 5000
+  processor:
+    cmd:
+      - node
+      - lib/main
+    env:
+      CHAIN: mantle-mainnet
+      STARTING_BLOCK: 67367717
+      DISABLED_RPC: false
+      CONTRACT_REGISTRY: '0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373'
+  api:
+    cmd:
+      - npx
+      - squid-graphql-server
+      - '--subscriptions'
+      - '--dumb-cache'
+      - in-memory
+      - '--dumb-cache-ttl'
+      - '1000'
+      - '--dumb-cache-size'
+      - '100'
+      - '--dumb-cache-max-age'
+      - '1000'
+
+scale:
+  dedicated: false
+  addons:
+    postgres:
+      storage: 1G
+      profile: small
