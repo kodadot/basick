@@ -9,8 +9,8 @@ import {
 import { Store } from '@subsquid/typeorm-store'
 import { events as erc721 } from './abi/ERC721'
 import { events as registry } from './abi/Registry'
-import { ENV_CONTRACTS, FINALITY_CONFIRMATION, PREINDEX_BLOCK, STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
-import { contractList, Contracts, ContractsMap } from './processable'
+import { CHAIN, ENV_CONTRACTS, FINALITY_CONFIRMATION, PREINDEX_BLOCK, STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
+import { contractList, Contracts } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
@@ -71,25 +71,29 @@ export const processor = new EvmBatchProcessor()
         transaction: true
     })
 
-    if (PREINDEX_BLOCK) {
-        contractList.forEach((contract) => {
-            processor.addLog({
-                address: [contract],
-                topic0: [erc721.Transfer.topic],
-                range: {
-                    from: PREINDEX_BLOCK,
-                    to: STARTING_BLOCK
-                },
-                transaction: true
+
+    if (CHAIN === 'base-mainet') {
+        if (PREINDEX_BLOCK) {
+            contractList.forEach((contract) => {
+                processor.addLog({
+                    address: [contract],
+                    topic0: [erc721.Transfer.topic],
+                    range: {
+                        from: PREINDEX_BLOCK,
+                        to: STARTING_BLOCK
+                    },
+                    transaction: true
+                })
             })
+        }
+    
+        processor.addLog({
+            address: [Contracts.Quadz],
+            topic0: [erc721.Transfer.topic],
+            transaction: true
         })
     }
 
-    processor.addLog({
-        address: [Contracts.Quadz],
-        topic0: [erc721.Transfer.topic],
-        transaction: true
-    })
 
     // .addLog({
     //     address: [Contracts.Conjunto],
