@@ -18,6 +18,7 @@ deploy:
       PREINDEX_BLOCK: 13156864
       STARTING_BLOCK: 14542021
       CONTRACT_REGISTRY: '0xcacfe59736172a192c2518f0f83b825b984cc399'
+      SQD_DEBUG: 'squid:log'
   api:
     cmd:
       - npx
