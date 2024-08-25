@@ -73,6 +73,7 @@ export const processor = new EvmBatchProcessor()
 
 
     if (CHAIN === 'base-mainet') {
+        console.log('BASE DETECTED, PREINDEXING FROM', PREINDEX_BLOCK)
         if (PREINDEX_BLOCK) {
             contractList.forEach((contract) => {
                 processor.addLog({
