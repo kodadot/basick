@@ -9,8 +9,8 @@ import {
 import { Store } from '@subsquid/typeorm-store'
 import { events as erc721 } from './abi/ERC721'
 import { events as registry } from './abi/Registry'
-import { CHAIN, ENV_CONTRACTS, FINALITY_CONFIRMATION, PREINDEX_BLOCK, PossibleChain, STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
-import { contractList, Contracts } from './processable'
+import { CHAIN, ENV_CONTRACTS, FINALITY_CONFIRMATION, PREINDEX_BLOCK, STARTING_BLOCK, disabledRPC, getArchiveUrl, getNodeUrl } from './environment'
+import { Contracts, contractList } from './processable'
 
 // export const CONTRACT_ADDRESS = '0x6e0bed56fb3eb7d2fecc5bb71f99e844cd3c2a0b'
 
