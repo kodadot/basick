@@ -35,7 +35,8 @@ export enum Contracts {
   Pixels = "0xc815823d86715fc9355c79252711f61087b39b39",
   Estrutura = "0xbbf5c72ac002f4f6e074c7ad47fd278deb5c740e",
   // Test Collections
-  Quadz = "0x61fa91bc4df01c199f2c9576a2fe10ea206a55e1",
+  // Quadz = "0x61fa91bc4df01c199f2c9576a2fe10ea206a55e1",
+  Quadz = "0x8e985d2804d2d4d9e7b2aad0e4a2f35212e5420a",
 }
 
 export const ContractsMap: Record<Contracts, any> = {
