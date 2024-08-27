@@ -17,5 +17,5 @@ export const BASE_URI_MAP: Record<Partial<Contracts>, string> = {
   [Contracts.Etchings]: 'https://dyndata.deno.dev/base/content/0x439dfafd1d07c03f8ce332af17c2d80772d63ecb/',
   [Contracts.Pixels]: 'https://dyndata.deno.dev/base/content/0xc815823d86715fc9355c79252711f61087b39b39/',
   [Contracts.Estrutura]: 'https://dyndata.deno.dev/base/content/0xbbf5c72ac002f4f6e074c7ad47fd278deb5c740e/',
-  [Contracts.Quadz]: 'https://dyndata.deno.dev/base/content/0x61fa91bc4df01c199f2c9576a2fe10ea206a55e1/',
+  [Contracts.Quadz]: 'https://dyndata.koda.art/v1/metadata/base/0x8e985d2804d2d4d9e7b2aad0e4a2f35212e5420a/',
 }
