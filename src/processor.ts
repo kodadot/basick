@@ -70,6 +70,13 @@ export const processor = new EvmBatchProcessor()
         },
         transaction: true
     })
+    .addLog({
+        topic0: [erc721.ContractURIUpdated.topic],
+        range: {
+            from: STARTING_BLOCK
+        },
+        transaction: true
+    })
 
 
     if ('base-mainnet' === CHAIN) {

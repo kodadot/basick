@@ -7,6 +7,7 @@ import { ENV_CONTRACTS, PREINDEX_BLOCK } from '../environment'
 import { CollectionEntity as CE, Interaction, MetadataEntity, NFTEntity as NE } from '../model'
 import { Contracts, contractList } from '../processable'
 import { ERC721_TRANSFER, handler as handle721Token } from './erc721'
+import { ERC7572_CONTRACT_URI, handler as handle7572Metadata } from './erc7572'
 import { REGISTRY } from './registry'
 import { forceCollectionCreate, handleCollectionAdd } from './registry/add'
 import { handleMetadata } from './shared/metadata'
@@ -68,6 +69,10 @@ function unwrapLog(log: Log, block: BlockData): ItemStateUpdate | null {
   if (mainTopic(log) == ERC721_TRANSFER) {
     return handle721Token(log, block)
   }
+
+  // if (mainTopic(log) == ERC7572_CONTRACT_URI) {
+  //   return handle7572Metadata(log, block)
+  // }
 
   console.log('unknown log', mainTopic(log))
   return null
