@@ -7,6 +7,7 @@ import { ENV_CONTRACTS, PREINDEX_BLOCK } from '../environment'
 import { CollectionEntity as CE, Interaction, MetadataEntity, NFTEntity as NE } from '../model'
 import { Contracts, contractList } from '../processable'
 import { ERC721_TRANSFER, handler as handle721Token } from './erc721'
+import { ERC7572_CONTRACT_URI, handler as handle7572Metadata } from './erc7572'
 import { REGISTRY } from './registry'
 import { forceCollectionCreate, handleCollectionAdd } from './registry/add'
 import { handleMetadata } from './shared/metadata'
@@ -14,9 +15,10 @@ import { BASE_URI_MAP, MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/c
 import { findByIdListAsMap } from './utils/entity'
 import { lastBatchBlock, mainTopic } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
-import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
+import { BlockData, CollectionStateUpdate, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
 import { handleSingleTokenRegister } from './registry/mint'
+import { handleCollectionMetadataSet } from './erc7572/setMetadata'
 
 export async function mainFrame(ctx: Context): Promise<void> {
   logger.info(`Processing ${ctx.blocks.length} blocks from ${ctx.blocks[0].header.height} to ${ctx.blocks[ctx.blocks.length - 1].header.height}`)
@@ -27,15 +29,23 @@ export async function mainFrame(ctx: Context): Promise<void> {
     console.log(`Cached ${cached.length} collections`)
   }
 
-  const items = []
+  const items: ItemStateUpdate[] = []
 
   for (const block of ctx.blocks) {
     for (const log of block.logs) {
-      if (log.address === ENV_CONTRACTS.REGISTRY && mainTopic(log) === REGISTRY.COLLECTION_REGISTERED) {
-        await handleCollectionAdd(log, ctx)
-      } else {
-        const item = unwrapLog(log, block)
-        if (item) {
+      const topic = mainTopic(log)
+      switch (topic) {
+        case REGISTRY.COLLECTION_REGISTERED:
+          if (log.address === ENV_CONTRACTS.REGISTRY) {
+            await handleCollectionAdd(log, ctx)
+          }
+          break;
+        case ERC7572_CONTRACT_URI:
+          await handleCollectionMetadataSet(log, ctx)
+          break;
+        default:
+          const item = unwrapLog(log, block)
+          if (item) {
             items.push(item)
           }
       }
