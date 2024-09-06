@@ -213,7 +213,7 @@ async function _completeTokens(ctx: Context, tokenMap: EnMap<NE>) {
 }
 // Multicall does not exist in Immutable
 async function _multicallMetadataFetch(ctx: Context, collection: string, tokens: Array<string>): Promise<string[]> {
-  const tokenIds = tokens.map((id) => [BigInt(id)])
+  const tokenIds = tokens.map((id) => ({ tokenId: BigInt(id) }))
   const contract = new Multicall(ctx, lastBatchBlock(ctx), MULTICALL_ADDRESS)
   const metadata = await contract.aggregate(
     erc721.functions.tokenURI,
