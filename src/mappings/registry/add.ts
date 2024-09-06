@@ -47,9 +47,9 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   if (final.metadata) {
     const metadata = await handleMetadata(final.metadata, process.store)
     final.meta = metadata
-    final.name = metadata?.name
-    final.image = metadata?.image
-    final.media = metadata?.animationUrl
+    final.name = metadata?.name || final.name
+    final.image = metadata?.image || final.image
+    final.media = metadata?.animationUrl || final.media
   }
 
   await process.store.save(final)
