@@ -34,9 +34,6 @@ export enum Contracts {
   Etchings = "0x439dfafd1d07c03f8ce332af17c2d80772d63ecb", 
   Pixels = "0xc815823d86715fc9355c79252711f61087b39b39",
   Estrutura = "0xbbf5c72ac002f4f6e074c7ad47fd278deb5c740e",
-  // Test Collections
-  // Quadz = "0x61fa91bc4df01c199f2c9576a2fe10ea206a55e1",
-  Quadz = "0x8e985d2804d2d4d9e7b2aad0e4a2f35212e5420a",
 }
 
 export const ContractsMap: Record<Contracts, any> = {
@@ -95,14 +92,7 @@ export const ContractsMap: Record<Contracts, any> = {
     128,
     "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
     "ipfs://bafkreib5pt53graj4wexhpgj3qrl37m3bsgjf3hz5muogqccdtutaq2huq",
-  ),
-  [Contracts.Quadz]: toMap(
-    "Quadz",
-    "QDZ",
-    256,
-    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
-    "ipfs://QmPyi8YmfjgktC3UGNiV1naeGK6Cg8rRxnNZRfCErpjf8g",
-  ),
+  )
 };
 
 export const contractList: string[] = Object.keys(ContractsMap);

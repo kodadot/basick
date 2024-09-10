@@ -94,12 +94,6 @@ export const processor = new EvmBatchProcessor()
                 })
             })
         }
-    
-        processor.addLog({
-            address: [Contracts.Quadz],
-            topic0: [erc721.Transfer.topic],
-            transaction: true
-        })
     }
 
 
