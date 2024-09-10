@@ -9,7 +9,6 @@ export const MULTICALL_ADDRESS = '0xca11bde05977b3631167028862be2a173976ca11'
 export const MULTICALL_BATCH_SIZE = 100
 
 export const BASE_URI_MAP: Record<Partial<Contracts>, string> = {
-  [Contracts.Vortices]: 'https://dyndata.deno.dev/base/content/0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373/',
   [Contracts.Higher]: 'https://dyndata.deno.dev/base/content/0x0b6504d95f9d550d274468fb6de5d13b7e64aa6a/',
   [Contracts.Unfoldings]: 'https://dyndata.deno.dev/base/content/0xc029b380f8a451cfd9e5124fa9fcad4397b8c119/',
   [Contracts.Basescapes]: 'https://dyndata.deno.dev/base/content/0xd9a2c93ba2e9fae10fe762a42ee807bbf95764cc/',
