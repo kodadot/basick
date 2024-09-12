@@ -17,6 +17,8 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   const event = unwrap(context, getCreateCollectionEvent)
   const final = await getOrCreate(process.store, CE, event.collection, {})
 
+  const max = Number(event.info.maxSupply)
+
   final.blockNumber = BigInt(event.blockNumber)
   // final.burned = false
   final.baseUri = event.info.baseURI
@@ -28,7 +30,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   final.highestSale = BigInt(0)
   final.id = contractOf(event.collection)
   final.issuer = event.caller || event.creator
-  final.max = Number(event.info.maxSupply) ?? undefined
+  final.max = max <= Number.MAX_SAFE_INTEGER ? max : undefined
   final.metadata = event.info.contractURI
   final.name = event.info.name
   final.nftCount = final.nftCount || 0
@@ -45,9 +47,9 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
   if (final.metadata) {
     const metadata = await handleMetadata(final.metadata, process.store)
     final.meta = metadata
-    final.name = metadata?.name
-    final.image = metadata?.image
-    final.media = metadata?.animationUrl
+    final.name = metadata?.name || final.name
+    final.image = metadata?.image || final.image
+    final.media = metadata?.animationUrl || final.media
   }
 
   await process.store.save(final)

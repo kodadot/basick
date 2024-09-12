@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: flock
-version: 1
+version: 2
 description: 'SubSquid indexer for Mantle'
 build:
 deploy:

@@ -4,7 +4,7 @@ import { Optional } from '@kodadot1/metasquid/types'
 import type { Content } from '@kodadot1/hyperdata'
 import { logger } from '@kodadot1/metasquid/logger'
 import { Store } from '@subsquid/typeorm-store'
-import md5 from 'md5'
+// import md5 from 'md5'
 import { MetadataEntity as Metadata } from '../../model/generated'
 import { fetchMetadata } from '../utils/metadata'
 
@@ -21,9 +21,10 @@ export async function handleMetadata(id: string, store: Store): Promise<Optional
   if (!metadata) {
     return undefined
   }
-
+ // https://github.com/kodadot/stick/blob/8d444ee54422837a1ecfd37c81ee6a5fb2959178/src/mappings/shared/metadata.ts#L26
   const partial: Partial<Metadata> = {
-    id: md5(id),
+    id,
+    // id: md5(id),
     description: metadata.description || '',
     image: metadata.image || metadata.thumbnail,
     animationUrl: metadata.animationUrl,

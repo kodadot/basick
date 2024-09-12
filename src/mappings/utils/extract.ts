@@ -25,6 +25,20 @@ export function addressOf(event: string): string {
 }
 
 
+export function numberify(value: Optional<string | number | bigint>): Optional<number> {
+  if (!value) {
+    return undefined;
+  }
+
+  const num = Number(value);
+  if (!isFinite(num) || num > Number.MAX_SAFE_INTEGER) {
+    return undefined;
+  }
+
+  return num;
+}
+
+
 export function unwrap<T>(ctx: Context, unwrapFn: UnwrapFunc<T>): CallWith<T> {
   const baseCall = toBaseEvent(ctx);
   const unwrapped = unwrapFn(ctx);

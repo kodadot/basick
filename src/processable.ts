@@ -26,7 +26,7 @@ import { CollectionEntity, CollectionType } from "./model";
 
 // https://docs.subsquid.io/sdk/resources/evm/proxy-contracts/
 export enum Contracts {
-  Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373",
+  // Vortices = "0x1b60a7ee6bba284a6aafa1eca0a1f7ea42099373",
   Higher = "0x0b6504d95f9d550d274468fb6de5d13b7e64aa6a",
   Unfoldings = "0xc029b380f8a451cfd9e5124fa9fcad4397b8c119",
   Basescapes = "0xd9a2c93ba2e9fae10fe762a42ee807bbf95764cc",
@@ -34,8 +34,6 @@ export enum Contracts {
   Etchings = "0x439dfafd1d07c03f8ce332af17c2d80772d63ecb", 
   Pixels = "0xc815823d86715fc9355c79252711f61087b39b39",
   Estrutura = "0xbbf5c72ac002f4f6e074c7ad47fd278deb5c740e",
-  // Test Collections
-  Quadz = "0x61fa91bc4df01c199f2c9576a2fe10ea206a55e1",
 }
 
 export const ContractsMap: Record<Contracts, any> = {
@@ -74,13 +72,6 @@ export const ContractsMap: Record<Contracts, any> = {
     "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
     "ipfs://bafkreibhgpovdknmpmzyljmqmzbhqcqnnqselzdvp52i6j4eqwdka6w6me",
   ),
-  [Contracts.Vortices]: toMap(
-    "Vortices",
-    "VTX",
-    128,
-    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
-    "ipfs://bafkreicthpidyo3gznp3uuezvweiur7xcbo5qcwgw3x4teui2psoqxxbgq",
-  ),
   [Contracts.Higher]: toMap(
     "Higher",
     "↑",
@@ -94,14 +85,7 @@ export const ContractsMap: Record<Contracts, any> = {
     128,
     "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
     "ipfs://bafkreib5pt53graj4wexhpgj3qrl37m3bsgjf3hz5muogqccdtutaq2huq",
-  ),
-  [Contracts.Quadz]: toMap(
-    "Quadz",
-    "QDZ",
-    256,
-    "0xE844b2a0a6453250c920BD2b4B7741946aB16C08",
-    "ipfs://QmPyi8YmfjgktC3UGNiV1naeGK6Cg8rRxnNZRfCErpjf8g",
-  ),
+  )
 };
 
 export const contractList: string[] = Object.keys(ContractsMap);
