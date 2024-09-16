@@ -147,7 +147,7 @@ export type CollectionRegisteredEvent = {
 
 export type TokenRegisteredEvent = {
   collection: string
-  sn: string
+  sn: bigint
   owner: string
   metadata: string
 }
