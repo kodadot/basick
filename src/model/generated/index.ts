@@ -1,5 +1,4 @@
 export * from "./collectionEntity.model"
-export * from "./_kind"
 export * from "./_collectionType"
 export * from "./nftEntity.model"
 export * from "./tokenEntity.model"

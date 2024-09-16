@@ -5,7 +5,7 @@ import type { Content } from '@kodadot1/hyperdata'
 import { logger } from '@kodadot1/metasquid/logger'
 import { Store } from '@subsquid/typeorm-store'
 // import md5 from 'md5'
-import { Kind, MetadataEntity as Metadata } from '../../model/generated'
+import { MetadataEntity as Metadata } from '../../model/generated'
 import { fetchMetadata } from '../utils/metadata'
 
 export async function handleMetadata(id: string, store: Store): Promise<Optional<Metadata>> {
@@ -31,8 +31,7 @@ export async function handleMetadata(id: string, store: Store): Promise<Optional
     attributes: [], // metadata.attributes?.map(attributeFrom) || [],
     name: metadata.name || '',
     type: metadata.type || '',
-    banner: metadata.banner,
-    kind: metadata.kind as Kind || Kind.genart,
+    // banner: metadata.banner || '',
   }
 
   const final = create<Metadata>(Metadata, id, partial)
