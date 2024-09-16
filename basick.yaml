@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: basick
-version: 12
+version: 13
 description: 'SubSquid indexer for Base'
 build: 
 deploy:
