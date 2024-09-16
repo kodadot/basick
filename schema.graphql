@@ -29,10 +29,10 @@ type CollectionEntity @entity {
 }
 
 type NFTEntity @entity {
-  blockNumber: BigInt
+  blockNumber: BigInt @index
   burned: Boolean!
   collection: CollectionEntity!
-  createdAt: DateTime!
+  createdAt: DateTime! @index
   currentOwner: String! @index
   events: [Event!] @derivedFrom(field: "nft")
   hash: String! @index
@@ -44,13 +44,13 @@ type NFTEntity @entity {
   meta: MetadataEntity
   metadata: String
   name: String @index
-  price: BigInt
+  price: BigInt #@index
   recipient: String
   royalty: Float
-  sn: String!
+  sn: BigInt! @index
   updatedAt: DateTime!
   version: Int!
-  token: TokenEntity!
+  token: TokenEntity
 }
 
 type TokenEntity @entity {
