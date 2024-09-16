@@ -1,5 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, StringColumn as StringColumn_, BigIntColumn as BigIntColumn_, Index as Index_, DateTimeColumn as DateTimeColumn_, IntColumn as IntColumn_, OneToMany as OneToMany_, ManyToOne as ManyToOne_} from "@subsquid/typeorm-store"
 import {CollectionEvent} from "./collectionEvent.model"
+import {Kind} from "./_kind"
 import {MetadataEntity} from "./metadataEntity.model"
 import {NFTEntity} from "./nftEntity.model"
 import {CollectionType} from "./_collectionType"
@@ -48,6 +49,9 @@ export class CollectionEntity {
 
     @StringColumn_({nullable: false})
     issuer!: string
+
+    @Column_("varchar", {length: 6, nullable: true})
+    kind!: Kind | undefined | null
 
     @IntColumn_({nullable: true})
     max!: number | undefined | null
