@@ -1,12 +1,14 @@
 type CollectionEntity @entity {
-  blockNumber: BigInt
-  createdAt: DateTime!
+  baseUri: String
+  blockNumber: BigInt @index
+  # burned: Boolean!
+  createdAt: DateTime! @index
   currentOwner: String!
   distribution: Int! # dummy
   events: [CollectionEvent!] @derivedFrom(field: "collection")
-  floor: BigInt! # dummy
+  floor: BigInt! #@index dummy
   hash: String! @unique
-  highestSale: BigInt! # dummy
+  highestSale: BigInt! #@index dummy
   id: ID!
   image: String
   issuer: String!
@@ -15,16 +17,15 @@ type CollectionEntity @entity {
   meta: MetadataEntity
   metadata: String
   name: String @index
-  nftCount: Int! # dummy
+  nftCount: Int! #@index dummy
   nfts: [NFTEntity!] @derivedFrom(field: "collection")
   ownerCount: Int! # dummy
-  supply: Int! # dummy
-  baseUri: String
+  supply: Int! @index # dummy
   symbol: String # dummy
   type: CollectionType!
-  updatedAt: DateTime!
+  updatedAt: DateTime! @index
   version: Int! # dummy
-  volume: BigInt! # dummy
+  volume: BigInt! #@index dummy
 }
 
 type NFTEntity @entity {
