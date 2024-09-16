@@ -12,7 +12,6 @@ type CollectionEntity @entity {
   id: ID!
   image: String
   issuer: String!
-  kind: Kind
   max: Int
   media: String
   meta: MetadataEntity
@@ -76,8 +75,7 @@ type MetadataEntity @entity {
   attributes: [Attribute!]
   animationUrl: String
   type: String
-  banner: String
-  kind: Kind
+  # banner: String
 }
 
 type Attribute @jsonField {
@@ -135,15 +133,6 @@ enum Interaction {
   SEND
   UNLIST
   # LOCK
-}
-
-enum Kind {
-  poap
-  pfp
-  genart
-  mixed
-  # audio
-  # video
 }
 
 # type AssetEntity @entity {

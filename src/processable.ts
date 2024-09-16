@@ -1,4 +1,4 @@
-import { CollectionEntity, CollectionType, Kind } from "./model";
+import { CollectionEntity, CollectionType } from "./model";
 
 // https://sphere.market/immutable/collection/0x4cd9d7819c01c85F0130Aef429ab32D0465672A2
 // export enum Contracts {
@@ -116,6 +116,5 @@ function toMap(
     supply: 0,
     volume: BigInt(0),
     version: 721,
-    kind: Kind.genart,
   };
 }
