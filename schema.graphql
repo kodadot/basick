@@ -1,37 +1,39 @@
 type CollectionEntity @entity {
-  blockNumber: BigInt
-  createdAt: DateTime!
+  baseUri: String
+  blockNumber: BigInt @index
+  # burned: Boolean!
+  createdAt: DateTime! @index
   currentOwner: String!
   distribution: Int! # dummy
   events: [CollectionEvent!] @derivedFrom(field: "collection")
-  floor: BigInt! # dummy
+  floor: BigInt! #@index dummy
   hash: String! @unique
-  highestSale: BigInt! # dummy
+  highestSale: BigInt! #@index dummy
   id: ID!
   image: String
   issuer: String!
+  kind: Kind
   max: Int
   media: String
   meta: MetadataEntity
   metadata: String
   name: String @index
-  nftCount: Int! # dummy
+  nftCount: Int! #@index dummy
   nfts: [NFTEntity!] @derivedFrom(field: "collection")
   ownerCount: Int! # dummy
-  supply: Int! # dummy
-  baseUri: String
+  supply: Int! @index # dummy
   symbol: String # dummy
   type: CollectionType!
-  updatedAt: DateTime!
+  updatedAt: DateTime! @index
   version: Int! # dummy
-  volume: BigInt! # dummy
+  volume: BigInt! #@index dummy
 }
 
 type NFTEntity @entity {
-  blockNumber: BigInt
+  blockNumber: BigInt @index
   burned: Boolean!
   collection: CollectionEntity!
-  createdAt: DateTime!
+  createdAt: DateTime! @index
   currentOwner: String! @index
   events: [Event!] @derivedFrom(field: "nft")
   hash: String! @index
@@ -43,13 +45,13 @@ type NFTEntity @entity {
   meta: MetadataEntity
   metadata: String
   name: String @index
-  price: BigInt
+  price: BigInt #@index
   recipient: String
   royalty: Float
-  sn: String!
+  sn: BigInt! @index
   updatedAt: DateTime!
   version: Int!
-  token: TokenEntity!
+  token: TokenEntity
 }
 
 type TokenEntity @entity {
@@ -74,6 +76,8 @@ type MetadataEntity @entity {
   attributes: [Attribute!]
   animationUrl: String
   type: String
+  banner: String
+  kind: Kind
 }
 
 type Attribute @jsonField {
@@ -130,33 +134,27 @@ enum Interaction {
   MINT
   SEND
   UNLIST
+  # LOCK
 }
-# type Owner @entity {
-#     id: ID! # owner address
-#     ownedTokens: [Token!]! @derivedFrom(field: "owner")
+
+enum Kind {
+  poap
+  pfp
+  genart
+  mixed
+  # audio
+  # video
+}
+
+# type AssetEntity @entity {
+#   id: ID!
+#   name: String
+#   symbol: String
+#   decimals: Int
 # }
 
-# type Token @entity {
-#     id: ID! # string form of tokenId
-#     tokenId: BigInt!
-#     owner: Owner!
-#     uri: String!
-#     image: String
-#     attributes: [Attribute!]
-#     transfers: [Transfer!]! @derivedFrom(field: "token")
-# }
-
-# type Attribute {
-#     traitType: String!
-#     value: String!
-# }
-
-# type Transfer @entity {
-#     id: ID!
-#     token: Token!
-#     from: Owner!
-#     to: Owner!
-#     timestamp: DateTime!
-#     blockNumber: Int!
-#     txHash: String! @index
+# Entity to represent when the cache was last updated
+# type CacheStatus @entity {
+#   id: ID!
+#   lastBlockTimestamp: DateTime!
 # }
