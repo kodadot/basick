@@ -15,7 +15,7 @@ import { BASE_URI_MAP, MULTICALL_ADDRESS, MULTICALL_BATCH_SIZE } from './utils/c
 import { findByIdListAsMap } from './utils/entity'
 import { lastBatchBlock, mainTopic } from './utils/evm'
 import { finalizeCollections } from './utils/lookups'
-import { BlockData, CollectionStateUpdate, Context, EnMap, EventEntity, ItemStateUpdate, Log, createTokenId } from './utils/types'
+import { BlockData, Context, EnMap, EventEntity, ItemStateUpdate, Log, collectionFrom, createTokenId } from './utils/types'
 import { groupedItemsByCollection, uniqueEntitySets } from './utils/unique'
 import { handleSingleTokenRegister } from './registry/mint'
 import { handleCollectionMetadataSet } from './erc7572/setMetadata'
@@ -62,7 +62,9 @@ export async function mainFrame(ctx: Context): Promise<void> {
   const collections = await finalizeCollections(contracts, ctx)
   
   if (collections.size > 0) {
-    const finish = await whatToDoWithTokens({ tokens, collections, items }, ctx)
+    // give me set from tokens filtered by collections
+    const filtered = new Set([...tokens].filter(t => collections.has(collectionFrom(t))));
+    const finish = await whatToDoWithTokens({ tokens: filtered, collections, items }, ctx)
     logger.info(`Batch completed, ${finish.size} tokens saved`)
   } else {
     logger.info(`Batch empty`)

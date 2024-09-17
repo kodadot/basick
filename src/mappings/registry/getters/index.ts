@@ -36,7 +36,7 @@ export function getCreateTokenEvent(ctx: Log): TokenRegisteredEvent {
   const x = event.decode(ctx)
   return {
     collection: x.collection.toString(),
-    sn: x.tokenId.toString(),
+    sn: x.tokenId,
     owner: x.owner,
     metadata: x.tokenURI
   }
@@ -49,7 +49,7 @@ export function getCreateTokenListEvent(ctx: Log): TokenRegisteredEvent[] {
 
   return list.tokenIds.map((x, index) => ({
     collection: list.collection.toString(),
-    sn: x.toString(),
+    sn: x,
     owner: list.owners[index],
     metadata: list.tokenURIs[index]
   }))

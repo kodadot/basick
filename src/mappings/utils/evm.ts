@@ -20,16 +20,16 @@ export function lastBatchBlock(ctx: Context): BlockHeader {
   return ctx.blocks[ctx.blocks.length - 1].header
 }
 
-export function tokenUri(baseUri: Optional<string>, tokenId: Optional<string>): string {
-  if (!baseUri || !tokenId) {
+export function tokenUri(baseUri: Optional<string>, tokenId: Optional<string | bigint>): string {
+  if (!baseUri || tokenId !== undefined) {
     return ''
   }
   const uri = baseUri.endsWith('/') ? baseUri : `${baseUri}/`
   return `${uri}${tokenId}`
 }
 
-export function tokenName(baseName: Optional<string>, tokenId: Optional<string>): string {
-  if (!baseName || !tokenId) {
+export function tokenName(baseName: Optional<string>, tokenId: Optional<string | bigint>): string {
+  if (!baseName || tokenId !== undefined) {
     return ''
   }
   return `${baseName} #${tokenId}`

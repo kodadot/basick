@@ -147,7 +147,7 @@ export type CollectionRegisteredEvent = {
 
 export type TokenRegisteredEvent = {
   collection: string
-  sn: string
+  sn: bigint
   owner: string
   metadata: string
 }
@@ -280,6 +280,15 @@ export function ensure<T>(value: unknown): T {
 
 export function createTokenId(collection: string, id: string | bigint): string {
   return `${collection}-${id.toString()}`
+}
+
+export function collectionFrom(tokenId: string): string {
+  const maybe = tokenId.split('-').at(0)
+  if (!maybe) {
+    throw new Error(`Invalid token id ${tokenId}`)
+  }
+  // return isAddress(maybe) ? maybe : ''
+  return maybe
 }
 
 // export const eventId = (id: string, event: Interaction): string =>

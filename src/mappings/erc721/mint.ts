@@ -22,7 +22,7 @@ export function handleTokenCreate({ to, tokenId }: Transfer, context: Log): Item
       createdAt: base.timestamp,
       blockNumber: BigInt(base.blockNumber),
       hash: md5(id),
-      sn: tokenId.toString(),
+      sn: tokenId,
       price: 0n,
       burned: false,
       lewd: false,

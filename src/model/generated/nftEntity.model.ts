@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, BooleanColumn as BooleanColumn_, ManyToOne as ManyToOne_, Index as Index_, DateTimeColumn as DateTimeColumn_, StringColumn as StringColumn_, OneToMany as OneToMany_, FloatColumn as FloatColumn_, IntColumn as IntColumn_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, Index as Index_, BooleanColumn as BooleanColumn_, ManyToOne as ManyToOne_, DateTimeColumn as DateTimeColumn_, StringColumn as StringColumn_, OneToMany as OneToMany_, FloatColumn as FloatColumn_, IntColumn as IntColumn_} from "@subsquid/typeorm-store"
 import {CollectionEntity} from "./collectionEntity.model"
 import {Event} from "./event.model"
 import {MetadataEntity} from "./metadataEntity.model"
@@ -10,6 +10,7 @@ export class NFTEntity {
         Object.assign(this, props)
     }
 
+    @Index_()
     @BigIntColumn_({nullable: true})
     blockNumber!: bigint | undefined | null
 
@@ -20,6 +21,7 @@ export class NFTEntity {
     @ManyToOne_(() => CollectionEntity, {nullable: true})
     collection!: CollectionEntity
 
+    @Index_()
     @DateTimeColumn_({nullable: false})
     createdAt!: Date
 
@@ -69,8 +71,9 @@ export class NFTEntity {
     @FloatColumn_({nullable: true})
     royalty!: number | undefined | null
 
-    @StringColumn_({nullable: false})
-    sn!: string
+    @Index_()
+    @BigIntColumn_({nullable: false})
+    sn!: bigint
 
     @DateTimeColumn_({nullable: false})
     updatedAt!: Date
@@ -80,5 +83,5 @@ export class NFTEntity {
 
     @Index_()
     @ManyToOne_(() => TokenEntity, {nullable: true})
-    token!: TokenEntity
+    token!: TokenEntity | undefined | null
 }

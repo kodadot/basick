@@ -54,6 +54,7 @@ export async function handleCollectionMetadataSet(context: Log, process: Context
     final.name = metadata?.name || final.name
     final.image = metadata?.image || final.image
     final.media = metadata?.animationUrl || final.media
+    final.kind = metadata?.kind || final.kind
   }
 
   await process.store.save(final)

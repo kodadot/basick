@@ -1,5 +1,6 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, DateTimeColumn as DateTimeColumn_, StringColumn as StringColumn_, IntColumn as IntColumn_, OneToMany as OneToMany_, Index as Index_, ManyToOne as ManyToOne_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, StringColumn as StringColumn_, BigIntColumn as BigIntColumn_, Index as Index_, DateTimeColumn as DateTimeColumn_, IntColumn as IntColumn_, OneToMany as OneToMany_, ManyToOne as ManyToOne_} from "@subsquid/typeorm-store"
 import {CollectionEvent} from "./collectionEvent.model"
+import {Kind} from "./_kind"
 import {MetadataEntity} from "./metadataEntity.model"
 import {NFTEntity} from "./nftEntity.model"
 import {CollectionType} from "./_collectionType"
@@ -10,9 +11,14 @@ export class CollectionEntity {
         Object.assign(this, props)
     }
 
+    @StringColumn_({nullable: true})
+    baseUri!: string | undefined | null
+
+    @Index_()
     @BigIntColumn_({nullable: true})
     blockNumber!: bigint | undefined | null
 
+    @Index_()
     @DateTimeColumn_({nullable: false})
     createdAt!: Date
 
@@ -44,6 +50,9 @@ export class CollectionEntity {
     @StringColumn_({nullable: false})
     issuer!: string
 
+    @Column_("varchar", {length: 6, nullable: true})
+    kind!: Kind | undefined | null
+
     @IntColumn_({nullable: true})
     max!: number | undefined | null
 
@@ -70,11 +79,9 @@ export class CollectionEntity {
     @IntColumn_({nullable: false})
     ownerCount!: number
 
+    @Index_()
     @IntColumn_({nullable: false})
     supply!: number
-
-    @StringColumn_({nullable: true})
-    baseUri!: string | undefined | null
 
     @StringColumn_({nullable: true})
     symbol!: string | undefined | null
@@ -82,6 +89,7 @@ export class CollectionEntity {
     @Column_("varchar", {length: 7, nullable: false})
     type!: CollectionType
 
+    @Index_()
     @DateTimeColumn_({nullable: false})
     updatedAt!: Date
 
