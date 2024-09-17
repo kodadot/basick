@@ -1,6 +1,6 @@
 import { create, getOrCreate } from '@kodadot1/metasquid/entity'
 import md5 from 'md5'
-import { CollectionEntity as CE, CollectionType } from '../../model'
+import { CollectionEntity as CE, CollectionType, Kind } from '../../model'
 import { handleMetadata } from '../shared/metadata'
 import { contractOf, unwrap } from '../utils/extract'
 import { debug, pending, success } from '../utils/logger'
@@ -50,6 +50,7 @@ export async function handleCollectionAdd(context: Log, process: Context): Promi
     final.name = metadata?.name || final.name
     final.image = metadata?.image || final.image
     final.media = metadata?.animationUrl || final.media
+    final.kind = metadata?.kind || final.kind
   }
 
   await process.store.save(final)
