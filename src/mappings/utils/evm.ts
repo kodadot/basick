@@ -21,7 +21,7 @@ export function lastBatchBlock(ctx: Context): BlockHeader {
 }
 
 export function tokenUri(baseUri: Optional<string>, tokenId: Optional<string | bigint>): string {
-  if (!baseUri || tokenId !== undefined) {
+  if (!baseUri || tokenId == undefined) {
     return ''
   }
   const uri = baseUri.endsWith('/') ? baseUri : `${baseUri}/`
