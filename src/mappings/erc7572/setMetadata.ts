@@ -1,14 +1,13 @@
 
 import { merge } from '@kodadot1/metasquid'
 import { getOptional } from '@kodadot1/metasquid/entity'
-import { warn } from 'console'
 import { CollectionEntity as CE } from '../../model'
 import { createEvent } from '../shared/event'
 import { handleMetadata } from '../shared/metadata'
 import { contractOf, toBaseEvent } from '../utils/extract'
-import { pending, success } from '../utils/logger'
+import { pending, success, warn } from '../utils/logger'
 import { CollectionStateUpdate, Context, eventFrom, Log } from '../utils/types'
-import { ContractMetadataUpdate, decode7572ContractUpdate } from './utils'
+import { ContractMetadataUpdate, safeDecode7572Update } from './utils'
 
 const OPERATION = 'METADATA' as any
 
@@ -36,11 +35,16 @@ export async function handleCollectionMetadataSet(context: Log, process: Context
   pending(OPERATION, `[COLLECTION/${OPERATION}]: ${context.block.height}`)
   const contract = contractOf(context)
   const base = toBaseEvent(context)
-  const event = decode7572ContractUpdate(context)
+  const event = safeDecode7572Update(context)
   const final = await getOptional(process.store, CE, contract)
 
+  if (!event) {
+    warn(OPERATION, `[COLLECTION/${OPERATION}]: ${contract} wrong event`)
+    return
+  }
+
   if (!final) {
-    warn(`[COLLECTION/${OPERATION}]: ${contract} not found`)
+    warn(OPERATION, `[COLLECTION/${OPERATION}]: ${contract} not found`)
     return
   }
 
